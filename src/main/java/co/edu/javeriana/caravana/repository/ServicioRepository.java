@@ -1,5 +1,5 @@
 package co.edu.javeriana.caravana.repository;
 
-public class ProductoServicioRepository {
+public class ServicioRepository {
     
 }
