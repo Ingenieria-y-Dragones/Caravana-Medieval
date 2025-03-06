@@ -1,33 +1,27 @@
 package co.edu.javeriana.caravana.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 //import java.util.*;
 
-@Entity
-public class Jugador {
+@MappedSuperclass
+public abstract class Jugador {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private Long tiempoJugado;
 
-    @ManyToOne
-    private Caravana caravana;
 
-    public Jugador(Caravana caravana, Long id, String nombre, Rol rol) {
-        this.caravana = caravana;
+    public Jugador(Long id, String nombre, Long tiempoJugado) {
+        super();
         this.id = id;
         this.nombre = nombre;
-        this.rol = rol;
+        this.tiempoJugado = tiempoJugado;
     }
 
     public Long getId() {
@@ -46,37 +40,15 @@ public class Jugador {
         this.nombre = nombre;
     }
 
-    public Rol getRol() {
-        return rol;
+    public Long getTiempoJugado() {
+        return tiempoJugado;
     }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public void setTiempoJugado(Long tiempoJugado) {
+        this.tiempoJugado = tiempoJugado;
+    
     }
-
-    public Caravana getCaravana() {
-        return caravana;
-    }
-
-    public void setCaravana(Caravana caravana) {
-        this.caravana = caravana;
-    }
-
-    public enum Rol {
-        COMERCIANTE, CARAVANERO, ADMINISTRADOR
-    }
-
-    public boolean puedeViajar() {
-        return rol == Rol.CARAVANERO;
-    }
-
-    public boolean puedeComerciar() {
-        return rol == Rol.COMERCIANTE || rol == Rol.CARAVANERO;
-    }
-
-    public boolean puedeAdministrar() {
-        return rol == Rol.ADMINISTRADOR;
-    }
+    public abstract void realizarAccion();
 
 }
 

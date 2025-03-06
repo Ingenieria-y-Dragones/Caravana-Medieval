@@ -31,6 +31,7 @@ public class Ruta {
         return distancia / caravana.getVelocidad();
     }
 
+    
     public Ruta(Long id, Ciudad ciudadOrigen, Ciudad ciudadDestino, Double distancia, Boolean segura, Integer daño) {
         this.id = id;
         this.ciudadOrigen = ciudadOrigen;

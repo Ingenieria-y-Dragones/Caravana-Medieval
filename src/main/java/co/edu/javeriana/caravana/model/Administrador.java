@@ -4,40 +4,51 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-//import java.util.*;
+import jakarta.persistence.OneToOne;
 
 @Entity
-public class Producto {
+public class Administrador{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
 
-    private Float peso;
-    
-    public Producto(Long id, String nombre, Float peso) {
+    @OneToOne
+    private Sistema sistema;
+
+    public Administrador(Sistema sistema, Long id, String nombre) {
+        this.sistema = sistema;
         this.id = id;
         this.nombre = nombre;
-        this.peso = peso;
     }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Float getPeso() {
-        return peso;
+
+    public Sistema getSistema() {
+        return sistema;
     }
-    public void setPeso(Float peso) {
-        this.peso = peso;
+
+    public void setSistema(Sistema sistema) {
+        this.sistema = sistema;
+    }
+
+    public void realizarCRUD() {
+        System.out.println(getNombre() + " está realizando operaciones CRUD.");
     }
 }
-
