@@ -19,6 +19,8 @@ public class Servicio {
     @Enumerated(EnumType.STRING)
     private TipoServicio tipo;
 
+    public Servicio() {}
+    
     public Servicio(Double costo, Long id, TipoServicio tipo) {
         this.costo = costo;
         this.id = id;

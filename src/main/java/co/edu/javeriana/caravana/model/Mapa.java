@@ -19,6 +19,9 @@ public class Mapa {
     @OneToMany
     private Set<Ciudad> ciudades = new HashSet<>();
 
+    public Mapa() {
+    }
+
     public Mapa(Long id) {
         this.id=id;
     }

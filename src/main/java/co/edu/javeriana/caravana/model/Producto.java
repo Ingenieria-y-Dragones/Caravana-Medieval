@@ -14,12 +14,15 @@ public class Producto {
 
     private String nombre;
 
-    private Float peso;
+    private Integer cantidad;
     
-    public Producto(Long id, String nombre, Float peso) {
+    public Producto() {
+    }
+
+    public Producto(Long id, String nombre, Integer cantidad) {
         this.id = id;
         this.nombre = nombre;
-        this.peso = peso;
+        this.cantidad = cantidad;
     }
     public Long getId() {
         return id;
@@ -33,11 +36,11 @@ public class Producto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Float getPeso() {
-        return peso;
+    public Integer getCantidad() {
+        return cantidad;
     }
-    public void setPeso(Float peso) {
-        this.peso = peso;
+    public void setPeso(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 }
 

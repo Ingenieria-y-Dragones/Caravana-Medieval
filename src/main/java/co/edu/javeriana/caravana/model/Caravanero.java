@@ -7,10 +7,22 @@ import jakarta.persistence.ManyToOne;
 public class Caravanero extends Jugador {
 
     @ManyToOne
-    private final Caravana caravana;
+    private Caravana caravana;
+
+    protected Caravanero() {
+        super();
+    }
 
     public Caravanero(Long id, String nombre, Long tiempoJugado, Caravana caravana) {
         super(id, nombre, tiempoJugado);
+        this.caravana = caravana;
+    }
+    
+    public Caravana getCaravana() {
+        return caravana;
+    }
+    
+    public void setCaravana(Caravana caravana) {
         this.caravana = caravana;
     }
 
@@ -21,6 +33,7 @@ public class Caravanero extends Jugador {
     public void pagarServicios() {
         System.out.println(getNombre() + " está pagando por servicios.");
     }
+    
     public void comerciar() {
         System.out.println(getNombre() + " está comerciando en " + caravana.getCiudadActual());
     }
@@ -32,3 +45,4 @@ public class Caravanero extends Jugador {
         pagarServicios();
     }
 }
+

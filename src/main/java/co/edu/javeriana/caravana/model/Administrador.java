@@ -18,6 +18,8 @@ public class Administrador{
     @OneToOne
     private Sistema sistema;
 
+    public Administrador(){}
+
     public Administrador(Sistema sistema, Long id, String nombre) {
         this.sistema = sistema;
         this.id = id;

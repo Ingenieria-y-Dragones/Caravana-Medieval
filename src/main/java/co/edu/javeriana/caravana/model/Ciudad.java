@@ -37,6 +37,8 @@ public class Ciudad {
     @OneToMany
     private final Set<Ruta> rutasSalientes = new HashSet<>();
 
+    public Ciudad() {}
+
     public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Double impuesto,Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles) {
         this.factoresDemanda = factoresDemanda;
         this.factoresOferta = factoresOferta;

@@ -28,8 +28,10 @@ public class Caravana {
     @OneToMany
     private List<Producto> inventario;
 
-    @OneToMany(mappedBy = "caravana")
+    @OneToMany
     private List<Jugador> jugadores;
+
+    public Caravana() {}
 
     public Caravana(Float capacidadMaxima, Ciudad ciudadActual, Integer dinero, Integer hp, Long id, List<Producto> inventario, List<Jugador> jugadores, String nombre, Boolean proteccion, Integer velocidad) {
         this.capacidadMaxima = capacidadMaxima;

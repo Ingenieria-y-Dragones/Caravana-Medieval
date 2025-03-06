@@ -23,15 +23,8 @@ public class Ruta {
     private Boolean segura; // `true` si es segura, `false` si es peligrosa
     private Integer daño; // Daño recibido en rutas inseguras
 
-    public boolean esRutaSegura() {
-        return segura;
-    }
+    public Ruta() {}
 
-    public double calcularTiempoViaje(Caravana caravana) {
-        return distancia / caravana.getVelocidad();
-    }
-
-    
     public Ruta(Long id, Ciudad ciudadOrigen, Ciudad ciudadDestino, Double distancia, Boolean segura, Integer daño) {
         this.id = id;
         this.ciudadOrigen = ciudadOrigen;
@@ -87,5 +80,12 @@ public class Ruta {
 
     public void setDaño(Integer daño) {
         this.daño = daño;
+    }
+    public boolean esRutaSegura() {
+        return segura;
+    }
+
+    public double calcularTiempoViaje(Caravana caravana) {
+        return distancia / caravana.getVelocidad();
     }
 }
