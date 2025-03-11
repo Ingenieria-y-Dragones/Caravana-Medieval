@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciudad List</title>
+</head>
+<body>
+    <h1>Ciudad List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Impuesto</th>
+                <th>Productos Disponibles</th>
+                <th>Factores de Demanda</th>
+                <th>Factores de Oferta</th>
+                <th>Servicios Disponibles</th>
+                <th>Rutas Salientes</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ciudad : ${ciudades}">
+                <td th:text="${ciudad.Nombre}"></td>
+                <td th:text="${ciudad.Impuesto}"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <a th:href="@{/ciudad/view/{id}(id=${ciudad.id})}">View</a>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

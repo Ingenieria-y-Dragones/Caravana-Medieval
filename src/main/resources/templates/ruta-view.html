@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ciudad View</title>
+</head>
+<body>
+    <h1>Ciudad View</h1>
+    <ul>
+        <li th:text="${ruta.Daño}"></li>
+        <li th:text="${ruta.Distancia}"></li>
+        <li th:text="${ruta.Segura} ? 'Sí' : 'No'"></li>
+        <li th:text="${ruta.ciudadOrigen.Nombre}"></li>
+        <li th:text="${ruta.ciudadDestino.Nombre}"></li>
+    </ul>
+    <!--<p th:text="|${ciudad.Nombre} ${ciudad.Impuesto}|"></p>-->
+    <a th:href="@{/ruta/list}">Volver</a>
+</body>
+</html>

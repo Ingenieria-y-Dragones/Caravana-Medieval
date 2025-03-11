@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana.model.Ciudad;
 import co.edu.javeriana.caravana.service.CiudadService;
@@ -17,8 +19,20 @@ public class CiudadController {
     private CiudadService ciudadService;
 
     @GetMapping("/list")
-    void listarCiudades(){
+    public ModelAndView listarCiudades(){
         List<Ciudad> ciudades = ciudadService.listarCiudades();
-        // ModelAndView modelAndView = new ModelAndView("ciudad-list");
+        
+        ModelAndView modelAndView = new ModelAndView("ciudad-list");
+        modelAndView.addObject("ciudades", ciudades);
+        return modelAndView;
+    }
+
+    @GetMapping("/view/{idCiudad}")
+    public ModelAndView buscarCiudad(@PathVariable("idCiudad") Long id) {
+        Ciudad ciudad = ciudadService.buscarCiudad(id);
+        ModelAndView modelAndView = new ModelAndView("ciudad-view");
+
+        modelAndView.addObject("ciudad", ciudad);
+        return modelAndView;
     }
 }
