@@ -1,7 +1,9 @@
 package co.edu.javeriana.caravana.model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -18,6 +20,8 @@ public class Ciudad {
 
     private String nombre;
 
+    private Double impuesto;
+
     @ElementCollection
     private Map<Producto, Integer> productosDisponibles; //Stock
 
@@ -30,13 +34,19 @@ public class Ciudad {
     @OneToMany
     private List<Servicio> serviciosDisponibles;
 
-    public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles) {
+    @OneToMany
+    private final Set<Ruta> rutasSalientes = new HashSet<>();
+
+    public Ciudad() {}
+
+    public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Double impuesto,Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles) {
         this.factoresDemanda = factoresDemanda;
         this.factoresOferta = factoresOferta;
         this.id = id;
         this.nombre = nombre;
         this.productosDisponibles = productosDisponibles;
         this.serviciosDisponibles = serviciosDisponibles;
+        this.impuesto = impuesto;
     }
 
     public double calcularPrecioVenta(Producto producto) {
@@ -102,7 +112,21 @@ public class Ciudad {
     public void setServiciosDisponibles(List<Servicio> serviciosDisponibles) {
         this.serviciosDisponibles = serviciosDisponibles;
     }
+    public Set<Ruta> getRutasSalientes() {
+        return rutasSalientes;
+    }
 
+    public void agregarRutaSaliente(Ruta ruta) {
+        rutasSalientes.add(ruta);
+    }
+
+    public Double getImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(Double impuesto) {
+        this.impuesto = impuesto;
+    }
 
 }
 

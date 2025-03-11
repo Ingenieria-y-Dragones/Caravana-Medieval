@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 //import java.util.*;
 
@@ -14,22 +15,19 @@ public class Ruta {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "ciudad_origen_id", nullable = false)
     private Ciudad ciudadOrigen;
 
     @ManyToOne
+    @JoinColumn(name = "ciudad_destino_id", nullable = false)
+
     private Ciudad ciudadDestino;
 
     private Double distancia;
     private Boolean segura; // `true` si es segura, `false` si es peligrosa
     private Integer daño; // Daño recibido en rutas inseguras
 
-    public boolean esRutaSegura() {
-        return segura;
-    }
-
-    public double calcularTiempoViaje(Caravana caravana) {
-        return distancia / caravana.getVelocidad();
-    }
+    public Ruta() {}
 
     public Ruta(Long id, Ciudad ciudadOrigen, Ciudad ciudadDestino, Double distancia, Boolean segura, Integer daño) {
         this.id = id;
@@ -86,5 +84,12 @@ public class Ruta {
 
     public void setDaño(Integer daño) {
         this.daño = daño;
+    }
+    public boolean esRutaSegura() {
+        return segura;
+    }
+
+    public double calcularTiempoViaje(Caravana caravana) {
+        return distancia / caravana.getVelocidad();
     }
 }

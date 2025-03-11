@@ -14,16 +14,16 @@ public class Servicio {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String nombre;
     private Double costo;
 
     @Enumerated(EnumType.STRING)
     private TipoServicio tipo;
 
-    public Servicio(Double costo, Long id, String nombre, TipoServicio tipo) {
+    public Servicio() {}
+    
+    public Servicio(Double costo, Long id, TipoServicio tipo) {
         this.costo = costo;
         this.id = id;
-        this.nombre = nombre;
         this.tipo = tipo;
     }
 
@@ -33,14 +33,6 @@ public class Servicio {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Double getCosto() {
