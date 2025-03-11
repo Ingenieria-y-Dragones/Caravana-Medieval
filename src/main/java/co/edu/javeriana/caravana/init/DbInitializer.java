@@ -12,16 +12,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import co.edu.javeriana.caravana.model.Caravana;
+import co.edu.javeriana.caravana.model.Caravanero;
 import co.edu.javeriana.caravana.model.Ciudad;
+import co.edu.javeriana.caravana.model.Comerciante;
+import co.edu.javeriana.caravana.model.Jugador;
 import co.edu.javeriana.caravana.model.Mapa;
 import co.edu.javeriana.caravana.model.Producto;
 import co.edu.javeriana.caravana.model.Ruta;
 import co.edu.javeriana.caravana.model.Servicio;
+import co.edu.javeriana.caravana.model.Sistema;
+import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
+import co.edu.javeriana.caravana.repository.JugadorRepository;
 import co.edu.javeriana.caravana.repository.MapaRepository;
 import co.edu.javeriana.caravana.repository.ProductoRepository;
 import co.edu.javeriana.caravana.repository.RutaRepository;
 import co.edu.javeriana.caravana.repository.ServicioRepository;
+import co.edu.javeriana.caravana.repository.SistemaRepository;
 
 @Component
 public class DbInitializer implements CommandLineRunner {
@@ -41,6 +49,20 @@ public class DbInitializer implements CommandLineRunner {
     @Autowired
     private ServicioRepository servicioRepository;
 
+    @Autowired
+    private CaravanaRepository caravanaRepository;
+
+    @Autowired
+    private JugadorRepository jugadorRepository;
+
+    @Autowired
+    private SistemaRepository sistemaRepository;
+
+    private final List<String> nombresJugadores = Arrays.asList(
+        "Aelius", "Balthazar", "Cassius", "Darius", "Elyon",
+        "Faustus", "Gaius", "Hadrian", "Isidor", "Julius"
+    );
+
     private final List<String> nombresCiudades = Arrays.asList(
         "Akkadia", "Babiria", "Carthagos", "Damashq", "Elisium", "Farsia", "Gadir", "Heliopolis", "Iskandria", "Jerash",
         "Kushar", "Lidonia", "Memphis", "Nineveh", "Ophir", "Palmyra", "Quirhazar", "Rhodon", "Sidonia", "Tarsos",
@@ -56,6 +78,8 @@ public class DbInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Random random = new Random();
+        
         // Generar productos
         List<Producto> productos = List.of(
             new Producto(null, "Especias", 50),
@@ -113,7 +137,6 @@ public class DbInitializer implements CommandLineRunner {
 
         // Generar ciudades
         List<Ciudad> ciudades = new ArrayList<>();
-        Random random = new Random();
         for (int i = 0; i < 100; i++) {
             Map<Producto, Integer> stock = new HashMap<>();
             Map<Producto, Double> factoresDemanda = new HashMap<>();
@@ -157,10 +180,38 @@ public class DbInitializer implements CommandLineRunner {
         rutaRepository.saveAll(rutas);
         ciudadRepository.saveAll(ciudades); // Guardar las ciudades con rutas
 
-        // Crear el mapa con las ciudades generadas
+        // 3. Generar un mapa
         Mapa mapa = new Mapa(null);
         mapa.setCiudades(new HashSet<>(ciudades));
         mapaRepository.save(mapa);
+
+        // 4. Generar caravanas
+        List<Caravana> caravanas = generarCaravanas(ciudades, productos);
+        caravanaRepository.saveAll(caravanas);
+
+        // 5. Generar jugadores (comerciantes y caravaneros)
+        List<Jugador> jugadores = new ArrayList<>();
+
+        // 5 comerciantes en ciudades aleatorias
+        for (int i = 0; i < 5; i++) {
+            Ciudad ciudadAsignada = ciudades.get(random.nextInt(ciudades.size()));
+            Jugador comerciante = new Comerciante(null, nombresJugadores.get(i), random.nextLong(100, 1000), ciudadAsignada);
+            jugadores.add(comerciante);
+        }
+
+        // 5 caravaneros en caravanas aleatorias
+        for (int i = 5; i < 10; i++) {
+            Caravana caravanaAsignada = caravanas.get(random.nextInt(caravanas.size()));
+            Jugador caravanero = new Caravanero(null, nombresJugadores.get(i), random.nextLong(100, 1000), caravanaAsignada);
+            jugadores.add(caravanero);
+            caravanaAsignada.getJugadores().add(caravanero); // Agregar caravanero a la caravana
+        }
+        jugadorRepository.saveAll(jugadores);
+        caravanaRepository.saveAll(caravanas); // Guardar caravanas con sus caravaneros
+
+        // 6. Generar el sistema de juego
+        Sistema sistema = new Sistema(caravanas, 10000.0, null, List.of(mapa), 3600L, productos);
+        sistemaRepository.save(sistema);
     }
     // Generar servicios
     private List<Servicio> generarServicios() {
@@ -172,5 +223,18 @@ public class DbInitializer implements CommandLineRunner {
             }
         }
         return servicios;
+    }
+
+    private List<Caravana> generarCaravanas(List<Ciudad> ciudades, List<Producto> productos) {
+        Random random = new Random();
+        List<Caravana> caravanas = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            Ciudad ciudadInicio = ciudades.get(random.nextInt(ciudades.size()));
+            List<Producto> inventario = List.of(productos.get(random.nextInt(productos.size())));
+            Caravana caravana = new Caravana(100.0f, ciudadInicio, 500, 100, null, inventario, new ArrayList<>(), "Caravana " + (i + 1), random.nextBoolean(), random.nextInt(20) + 10);
+            caravanas.add(caravana);
+        }
+        return caravanas;
     }
 }

@@ -762,3 +762,7 @@ WHERE C.ID = 5 [42122-224]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "select * [*]form SISTEMA_CARAVANAS"
 Syntax error in SQL statement "select * [*]form SISTEMA_CARAVANAS"; SQL statement:
 select * form SISTEMA_CARAVANAS [42000-224]
+2025-03-11 07:16:22.790462-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "select * [*]fromCIUDAD"
+Syntax error in SQL statement "select * [*]fromCIUDAD"; SQL statement:
+select * fromCIUDAD [42000-224]
