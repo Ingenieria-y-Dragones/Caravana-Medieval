@@ -16,7 +16,7 @@ public abstract class Jugador {
     private String nombre;
     private Long tiempoJugado;
 
-    protected Jugador() {
+    public Jugador() {
     }
 
     public Jugador(Long id, String nombre, Long tiempoJugado) {
