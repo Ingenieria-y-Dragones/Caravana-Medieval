@@ -20,4 +20,8 @@ public class RutaService {
     public Ruta buscarRuta(Long id) {
         return rutaRepository.findById(id).orElseThrow();
     }
+
+    public List<Ruta> listarRutasPorCiudad(Long idCiudad) {
+        return rutaRepository.findByCiudadOrigenId(idCiudad);
+    }
 }

@@ -14,6 +14,8 @@ public class Ruta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String nombre;
+
     @ManyToOne
     @JoinColumn(name = "ciudad_origen_id", nullable = false)
     private Ciudad ciudadOrigen;
@@ -29,8 +31,9 @@ public class Ruta {
 
     public Ruta() {}
 
-    public Ruta(Long id, Ciudad ciudadOrigen, Ciudad ciudadDestino, Double distancia, Boolean segura, Integer daño) {
+    public Ruta(Long id,String nombre, Ciudad ciudadOrigen, Ciudad ciudadDestino, Double distancia, Boolean segura, Integer daño) {
         this.id = id;
+        this.nombre = nombre;
         this.ciudadOrigen = ciudadOrigen;
         this.ciudadDestino = ciudadDestino;
         this.distancia = distancia;
@@ -88,8 +91,17 @@ public class Ruta {
     public boolean esRutaSegura() {
         return segura;
     }
+    
 
     public double calcularTiempoViaje(Caravana caravana) {
         return distancia / caravana.getVelocidad();
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

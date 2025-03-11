@@ -3,35 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciudad List</title>
+    <title>Lista de Ciudades</title>
 </head>
 <body>
-    <h1>Ciudad List</h1>
-    <table>
+    <h1>Lista de Ciudades</h1>
+    <table border="1">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Impuesto</th>
-                <th>Productos Disponibles</th>
-                <th>Factores de Demanda</th>
-                <th>Factores de Oferta</th>
-                <th>Servicios Disponibles</th>
                 <th>Rutas Salientes</th>
-                <th>View</th>
+                <th>Ver Detalle</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="ciudad : ${ciudades}">
-                <td th:text="${ciudad.Nombre}"></td>
-                <td th:text="${ciudad.Impuesto}"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td th:text="${ciudad.nombre}"></td>
+                <td th:text="${ciudad.impuesto}"></td>
                 <td>
-                    <a th:href="@{/ciudad/view/{id}(id=${ciudad.id})}">View</a>
-
+                    <a th:href="@{/ciudad/view/ruta/{idCiudad}(idCiudad=${ciudad.id})}">Ver Rutas</a>
+                </td>
+                <td>
+                    <a th:href="@{/ciudad/view/{idCiudad}(idCiudad=${ciudad.id})}">Ver Ciudad</a>
                 </td>
             </tr>
         </tbody>

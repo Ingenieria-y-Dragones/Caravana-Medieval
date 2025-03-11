@@ -171,7 +171,8 @@ public class DbInitializer implements CommandLineRunner {
             for (int j = 0; j < rutasPorCiudad; j++) {
                 Ciudad destino = ciudades.get(random.nextInt(ciudades.size()));
                 if (!ciudad.equals(destino)) {
-                    Ruta ruta = new Ruta(null, ciudad, destino, 50.0 + random.nextDouble() * 450.0, random.nextBoolean(), random.nextInt(20));
+                    String nombre = "Ruta " + ciudad.getNombre() + " - " + destino.getNombre(); // Generar nombre dinámico
+                    Ruta ruta = new Ruta(null, nombre, ciudad, destino, 50.0 + random.nextDouble() * 450.0, random.nextBoolean(), random.nextInt(20));
                     rutas.add(ruta);
                     ciudad.agregarRutaSaliente(ruta);
                 }
@@ -179,6 +180,7 @@ public class DbInitializer implements CommandLineRunner {
         }
         rutaRepository.saveAll(rutas);
         ciudadRepository.saveAll(ciudades); // Guardar las ciudades con rutas
+
 
         // 3. Generar un mapa
         Mapa mapa = new Mapa(null);
