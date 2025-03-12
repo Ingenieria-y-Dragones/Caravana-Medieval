@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rutas desde [[${ciudad.nombre}]]</title>
+</head>
+<body>
+    <h1>Rutas salientes de [[${ciudad.nombre}]]</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Ruta</th>
+                <th>Destino</th>
+                <th>Distancia (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ruta : ${rutas}">
+                <td th:text="${ruta.id}"></td>
+                <td th:text="${ruta.ciudadDestino.nombre}"></td>
+                <td th:text="${ruta.distancia}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/ciudad/list">Volver a la lista de ciudades</a>
+</body>
+</html>

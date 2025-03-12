@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ciudad List</title>
+    <title>Ruta List</title>
 </head>
 <body>
-    <h1>Ciudad List</h1>
+    <h1>Ruta List</h1>
     <table>
         <thead>
             <tr>
+                <th>Nombre</th>
                 <th>Daño</th>
                 <th>Distancia</th>
                 <th>¿Es segura?</th>
@@ -20,6 +21,7 @@
         </thead>
         <tbody>
             <tr th:each="ruta : ${rutas}">
+                <td th:text="${ruta.Nombre}"></td>
                 <td th:text="${ruta.Daño}"></td>
                 <td th:text="${ruta.Distancia}"></td>
                 <td th:text="${ruta.Segura} ? 'Sí' : 'No'"></td>

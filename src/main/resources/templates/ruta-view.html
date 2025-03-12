@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ciudad View</title>
+    <title>Ruta View</title>
 </head>
 <body>
-    <h1>Ciudad View</h1>
+    <h1>Ruta View</h1>
     <ul>
+        <li th:text="${ruta.Nombre}"></li>
         <li th:text="${ruta.Daño}"></li>
         <li th:text="${ruta.Distancia}"></li>
         <li th:text="${ruta.Segura} ? 'Sí' : 'No'"></li>
