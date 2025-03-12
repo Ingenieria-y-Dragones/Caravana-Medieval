@@ -28,8 +28,8 @@
                 <td th:text="${ruta.Daño}"></td>
                 <td th:text="${ruta.Distancia}"></td>
                 <td th:text="${ruta.Segura} ? 'Sí' : 'No'"></td>
-                <td th:text="${ruta.ciudadOrigen.Nombre}"></td>
-                <td th:text="${ruta.ciudadDestino.Nombre}"></td>
+                <td th:text="${ruta.ciudadOrigen}"></td>
+                <td th:text="${ruta.ciudadDestino}"></td>
                 <td>
                     <a th:href="@{/ruta/view/{id}(id=${ruta.id})}">Ver</a>
                 </td>

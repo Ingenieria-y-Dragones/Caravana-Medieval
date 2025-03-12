@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 
 @Entity
 public class Ciudad {
@@ -34,10 +36,10 @@ public class Ciudad {
     @OneToMany
     private List<Servicio> serviciosDisponibles;
 
-    @OneToMany
+    @OneToMany(mappedBy = "ciudadDestino", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ruta> rutasSalientes = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "ciudadOrigen", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ruta> rutasEntrantes = new HashSet<>();
 
     public Ciudad() {}

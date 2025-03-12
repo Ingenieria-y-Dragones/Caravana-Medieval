@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Ruta</title>
+</head>
+<body>
+    <form action="/ruta/save" method="post">
+        <input type="hidden" name="id" th:value="${ruta.id}">
+    
+        <label>Nombre:</label>
+        <input type="text" id="nombre" name="nombre" th:value="${ruta.nombre}">
+    
+        <label>Distancia:</label>
+        <input type="text" id="distancia" name="distancia" th:value="${ruta.distancia}">
+    
+        <label>¿Es segura?:</label>
+        <input type="text" id="segura" name="segura" th:value="${ruta.segura}">
+    
+        <label>Daño:</label>
+        <input type="text" id="daño" name="daño" th:value="${ruta.daño}">
+    
+        <label>Ciudad Origen:</label>
+        <select name="ciudadOrigen">
+            <option th:each="ciudad : ${ciudades}" 
+                    th:value="${ciudad.nombre}" 
+                    th:text="${ciudad.nombre}" 
+                    th:selected="${ciudad.nombre == ruta.ciudadOrigen}">
+            </option>
+        </select>
+    
+        <label>Ciudad Destino:</label>
+        <select name="ciudadDestino">
+            <option th:each="ciudad : ${ciudades}" 
+                    th:value="${ciudad.nombre}" 
+                    th:text="${ciudad.nombre}" 
+                    th:selected="${ciudad.nombre == ruta.ciudadDestino}">
+            </option>
+        </select>
+    
+        <button type="submit">Guardar</button>
+    </form>
+    
+    
+</body>
+</html>

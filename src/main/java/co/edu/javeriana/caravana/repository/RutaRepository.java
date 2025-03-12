@@ -8,5 +8,5 @@ import co.edu.javeriana.caravana.model.Ruta;
 
 @Repository
 public interface RutaRepository extends JpaRepository<Ruta, Long> {
-
+    
 }
