@@ -14,6 +14,7 @@
         <li>Tipo: 
             <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Caravanero)}">Caravanero</span>
             <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Comerciante)}">Comerciante</span>
+            <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Administrador)}">Administrador</span>
         </li>
         
         <!-- Información específica por tipo -->
@@ -22,6 +23,9 @@
         </li>
         <li th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Comerciante)}">
             Ciudad: <span th:text="${((co.edu.javeriana.caravana.model.Comerciante)jugador).ciudad.nombre}"></span>
+        </li>
+        <li th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Administrador)}">
+            Sistema: <span th:text="${((co.edu.javeriana.caravana.model.Administrador)jugador).sistema.nombre}"></span>
         </li>
     </ul>
     

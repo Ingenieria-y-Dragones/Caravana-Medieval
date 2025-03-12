@@ -1,5 +1,7 @@
 package co.edu.javeriana.caravana.model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +18,7 @@ public abstract class Jugador {
     private String nombre;
     private Long tiempoJugado;
 
-    public Jugador() {
-    }
+    protected Jugador() {}
 
     public Jugador(Long id, String nombre, Long tiempoJugado) {
         this.id = id;
@@ -26,26 +27,25 @@ public abstract class Jugador {
     }
 
     // Getters y Setters
-    public Long getId() {
-        return id;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public Long getTiempoJugado() { return tiempoJugado; }
+    public void setTiempoJugado(Long tiempoJugado) { this.tiempoJugado = tiempoJugado; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Jugador jugador = (Jugador) o;
+        return Objects.equals(id, jugador.id);
     }
-    public void setId(Long id) {
-        this.id = id;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public Long getTiempoJugado() {
-        return tiempoJugado;
-    }
-    public void setTiempoJugado(Long tiempoJugado) {
-        this.tiempoJugado = tiempoJugado;
-    }
-    
+
     public abstract void realizarAccion();
 }
-
-

@@ -5,7 +5,6 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Caravanero extends Jugador {
-
     @ManyToOne
     private Caravana caravana;
 
@@ -17,14 +16,9 @@ public class Caravanero extends Jugador {
         super(id, nombre, tiempoJugado);
         this.caravana = caravana;
     }
-    
-    public Caravana getCaravana() {
-        return caravana;
-    }
-    
-    public void setCaravana(Caravana caravana) {
-        this.caravana = caravana;
-    }
+
+    public Caravana getCaravana() { return caravana; }
+    public void setCaravana(Caravana caravana) { this.caravana = caravana; }
 
     public void viajarEntreCiudades() {
         System.out.println(getNombre() + " está viajando entre ciudades.");

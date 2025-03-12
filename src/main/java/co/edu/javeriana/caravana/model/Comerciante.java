@@ -5,11 +5,10 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Comerciante extends Jugador {
-
     @ManyToOne
     private Ciudad ciudad;
 
-    protected Comerciante(){
+    protected Comerciante() {
         super();
     }
 
@@ -17,14 +16,9 @@ public class Comerciante extends Jugador {
         super(id, nombre, tiempoJugado);
         this.ciudad = ciudad;
     }
-    
-    public Ciudad getCiudad() {
-        return ciudad;
-    }
-    
-    public void setCiudad(Ciudad ciudad) {
-        this.ciudad = ciudad;
-    }
+
+    public Ciudad getCiudad() { return ciudad; }
+    public void setCiudad(Ciudad ciudad) { this.ciudad = ciudad; }
 
     public void comerciar() {
         System.out.println(getNombre() + " está comerciando en " + ciudad.getNombre());
@@ -35,4 +29,3 @@ public class Comerciante extends Jugador {
         comerciar();
     }
 }
-

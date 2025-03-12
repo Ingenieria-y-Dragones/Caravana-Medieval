@@ -8,7 +8,7 @@
     <h1 th:text="${jugador.id != null} ? 'Editar Jugador' : 'Crear Jugador'"></h1>
     
     <form th:action="${jugador.id != null} ? @{/jugador/update} : @{/jugador/save}" 
-          th:object="${jugador}" method="post">
+          method="post">
         
         <!-- Campo oculto para ID -->
         <input type="hidden" th:field="*{id}"/>
@@ -20,6 +20,8 @@
                    onclick="mostrarCamposEspecificos('caravanero')"> Caravanero
             <input type="radio" name="tipo" value="comerciante" required
                    onclick="mostrarCamposEspecificos('comerciante')"> Comerciante
+            <input type="radio" name="tipo" value="administrador" required
+                   onclick="mostrarCamposEspecificos('administrador')"> Administrador
         </div>
 
         <!-- Campos comunes -->
@@ -47,6 +49,15 @@
                         th:text="${ciudad.nombre}"></option>
             </select>
         </div>
+
+        <div id="administradorFields" style="display:none">
+            <label>Sistema:</label>
+            <select th:field="*{sistema}">
+                <option th:each="sistema : ${sistemas}" 
+                        th:value="${sistema.id}"
+                        th:text="${sistema.nombre}"></option>
+            </select>
+        </div>
         
         <button type="submit">Guardar</button>
         <a th:href="@{/jugador/list}">Cancelar</a>
@@ -58,6 +69,8 @@
                 tipo === 'caravanero' ? 'block' : 'none';
             document.getElementById('comercianteFields').style.display = 
                 tipo === 'comerciante' ? 'block' : 'none';
+            document.getElementById('administradorFields').style.display = 
+                tipo === 'administrador' ? 'block' : 'none';
         }
         
         // Mostrar campos al cargar (para edición)
