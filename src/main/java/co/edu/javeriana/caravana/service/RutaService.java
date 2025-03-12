@@ -21,7 +21,6 @@ public class RutaService {
         return rutaRepository.findById(id).orElseThrow();
     }
 
-    public List<Ruta> listarRutasPorCiudad(Long idCiudad) {
-        return rutaRepository.findByCiudadOrigenId(idCiudad);
-    }
+
+
 }

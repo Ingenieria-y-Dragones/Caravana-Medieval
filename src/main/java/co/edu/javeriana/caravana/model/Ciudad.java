@@ -35,11 +35,14 @@ public class Ciudad {
     private List<Servicio> serviciosDisponibles;
 
     @OneToMany
-    private final Set<Ruta> rutasSalientes = new HashSet<>();
+    private Set<Ruta> rutasSalientes = new HashSet<>();
+
+    @OneToMany
+    private Set<Ruta> rutasEntrantes = new HashSet<>();
 
     public Ciudad() {}
 
-    public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Double impuesto,Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles) {
+    public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Double impuesto,Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles, Set<Ruta> rutasEntrantes, Set<Ruta> rutasSalientes) {
         this.factoresDemanda = factoresDemanda;
         this.factoresOferta = factoresOferta;
         this.id = id;
@@ -47,6 +50,8 @@ public class Ciudad {
         this.productosDisponibles = productosDisponibles;
         this.serviciosDisponibles = serviciosDisponibles;
         this.impuesto = impuesto;
+        this.rutasEntrantes =rutasEntrantes;
+        this.rutasSalientes =rutasSalientes;
     }
 
     public double calcularPrecioVenta(Producto producto) {
@@ -120,6 +125,20 @@ public class Ciudad {
         rutasSalientes.add(ruta);
     }
 
+    public void setRutasSalientes(Set<Ruta> rutasSalientes) {
+        this.rutasSalientes = rutasSalientes;
+    }
+    public Set<Ruta> getRutasEntrantes() {
+        return rutasEntrantes;
+    }
+    public void setRutasEntrantes(Set<Ruta> rutasEntrantes) {
+        this.rutasEntrantes = rutasEntrantes;
+    }
+
+    public void agregarRutaEntrante(Ruta ruta) {
+        rutasEntrantes.add(ruta);
+    }
+
     public Double getImpuesto() {
         return impuesto;
     }
@@ -127,6 +146,7 @@ public class Ciudad {
     public void setImpuesto(Double impuesto) {
         this.impuesto = impuesto;
     }
+
 
 }
 

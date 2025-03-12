@@ -12,7 +12,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Impuesto</th>
-                <th>Rutas Salientes</th>
+                <th>Rutas Entrantes - Salientes</th>
                 <th>Ver Detalle</th>
             </tr>
         </thead>
@@ -21,7 +21,7 @@
                 <td th:text="${ciudad.nombre}"></td>
                 <td th:text="${ciudad.impuesto}"></td>
                 <td>
-                    <a th:href="@{/ciudad/view/ruta/{idCiudad}(idCiudad=${ciudad.id})}">Ver Rutas</a>
+                    <a th:href="@{/ciudad/view/ruta/salientes/{idCiudad}(idCiudad=${ciudad.id})}">Ver Rutas Entrantes - Salientes</a>
                 </td>
                 <td>
                     <a th:href="@{/ciudad/view/{idCiudad}(idCiudad=${ciudad.id})}">Ver Ciudad</a>
@@ -31,3 +31,4 @@
     </table>
 </body>
 </html>
+

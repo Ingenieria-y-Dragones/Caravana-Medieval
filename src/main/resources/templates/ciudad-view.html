@@ -2,15 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ciudad View</title>
+    <title>Detalles de [[${ciudad.nombre}]]</title>
 </head>
 <body>
-    <h1>Ciudad View</h1>
+    <h1>Detalles de la Ciudad</h1>
     <ul>
-        <li th:text="${ciudad.Nombre}"></li>
-        <li th:text="${ciudad.Impuesto}"></li>
+        <li><strong>Nombre:</strong> <span th:text="${ciudad.nombre}"></span></li>
+        <li><strong>Impuesto:</strong> <span th:text="${ciudad.impuesto}"></span></li>
     </ul>
-    <!--<p th:text="|${ciudad.Nombre} ${ciudad.Impuesto}|"></p>-->
+
+    <h2>Rutas Entrantes</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Ruta</th>
+                <th>Origen</th>
+                <th>Distancia (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ruta : ${ciudad.rutasEntrantes}">
+                <td th:text="${ruta.id}"></td>
+                <td th:text="${ruta.ciudadOrigen.nombre}"></td>
+                <td th:text="${ruta.distancia}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(ciudad.rutasEntrantes)}">
+                <td colspan="3">No hay rutas entrantes.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Rutas Salientes</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Ruta</th>
+                <th>Destino</th>
+                <th>Distancia (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ruta : ${ciudad.rutasSalientes}">
+                <td th:text="${ruta.id}"></td>
+                <td th:text="${ruta.ciudadDestino.nombre}"></td>
+                <td th:text="${ruta.distancia}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(ciudad.rutasSalientes)}">
+                <td colspan="3">No hay rutas salientes.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
     <a th:href="@{/ciudad/list}">Volver</a>
 </body>
 </html>

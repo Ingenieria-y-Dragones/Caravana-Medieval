@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Ruta List</h1>
+    <p><a th:href="@{/ruta/create}">Crear Ruta</a></p>
     <table>
         <thead>
             <tr>
@@ -17,6 +18,8 @@
                 <th>Ciudad de Origen</th>
                 <th>Ciudad de Destino</th>
                 <th>View</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +31,13 @@
                 <td th:text="${ruta.ciudadOrigen.Nombre}"></td>
                 <td th:text="${ruta.ciudadDestino.Nombre}"></td>
                 <td>
-                    <a th:href="@{/ruta/view/{id}(id=${ruta.id})}">View</a>
-
+                    <a th:href="@{/ruta/view/{id}(id=${ruta.id})}">Ver</a>
+                </td>
+                <td>
+                    <a th:href="@{/ruta/edit/{id}(id=${ruta.id})}">Editar</a>
+                </td>
+                <td>
+                    <a th:href="@{/ruta/delete/{id}(id=${ruta.id})}">Borrar</a>
                 </td>
             </tr>
         </tbody>

@@ -158,8 +158,11 @@ public class DbInitializer implements CommandLineRunner {
                 nombresCiudades.get(i), // Usa nombres de la lista
                 random.nextDouble() * 0.2 + 0.05, 
                 stock, 
-                servicios
+                servicios,
+                new HashSet<>(),  // Inicializa rutasEntrantes vacías
+                new HashSet<>()   // Inicializa rutasSalientes vacías
             );
+
             ciudades.add(ciudad);
         }
         ciudadRepository.saveAll(ciudades);
@@ -167,19 +170,24 @@ public class DbInitializer implements CommandLineRunner {
         // Generar rutas aleatorias entre ciudades
         List<Ruta> rutas = new ArrayList<>();
         for (Ciudad ciudad : ciudades) {
-            int rutasPorCiudad = random.nextInt(4) + 2;
+            int rutasPorCiudad = random.nextInt(4) + 2; // Entre 2 y 5 rutas por ciudad
             for (int j = 0; j < rutasPorCiudad; j++) {
                 Ciudad destino = ciudades.get(random.nextInt(ciudades.size()));
-                if (!ciudad.equals(destino)) {
-                    String nombre = "Ruta " + ciudad.getNombre() + " - " + destino.getNombre(); // Generar nombre dinámico
+                
+                if (!ciudad.equals(destino)) { // Evitar rutas a sí misma
+                    String nombre = "Ruta " + ciudad.getNombre() + " - " + destino.getNombre(); 
                     Ruta ruta = new Ruta(null, nombre, ciudad, destino, 50.0 + random.nextDouble() * 450.0, random.nextBoolean(), random.nextInt(20));
+                    
                     rutas.add(ruta);
                     ciudad.agregarRutaSaliente(ruta);
+                    destino.agregarRutaEntrante(ruta); // Nueva línea para establecer la ruta entrante
                 }
             }
         }
+
         rutaRepository.saveAll(rutas);
-        ciudadRepository.saveAll(ciudades); // Guardar las ciudades con rutas
+        ciudadRepository.saveAll(ciudades); // Guardar las ciudades con rutas actualizadas
+
 
 
         // 3. Generar un mapa

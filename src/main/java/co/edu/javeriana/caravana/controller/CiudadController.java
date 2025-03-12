@@ -10,18 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.edu.javeriana.caravana.model.Ciudad;
-import co.edu.javeriana.caravana.model.Ruta;
 import co.edu.javeriana.caravana.service.CiudadService;
-import co.edu.javeriana.caravana.service.RutaService;
 
 @Controller
 @RequestMapping("/ciudad")
 public class CiudadController {
     @Autowired
     private CiudadService ciudadService;
-
-    @Autowired
-    private RutaService rutaService; 
 
     @GetMapping("/list")
     public ModelAndView listarCiudades(){
@@ -41,14 +36,28 @@ public class CiudadController {
         return modelAndView;
     }
 
-    @GetMapping("/view/ruta/{idCiudad}")
+    @GetMapping("/view/ruta/salientes/{idCiudad}")
     public ModelAndView listarRutasSalientes(@PathVariable("idCiudad") Long idCiudad) {
         Ciudad ciudad = ciudadService.buscarCiudad(idCiudad);
-        List<Ruta> rutas = rutaService.listarRutasPorCiudad(idCiudad); // Nuevo método
 
         ModelAndView modelAndView = new ModelAndView("rutas-ciudad-view");
         modelAndView.addObject("ciudad", ciudad);
-        modelAndView.addObject("rutas", rutas);
+        modelAndView.addObject("titulo", "Rutas Salientes desde " + ciudad.getNombre());
+        modelAndView.addObject("rutas", ciudad.getRutasSalientes());
+
+        return modelAndView;
+    }
+
+
+    @GetMapping("/view/ruta/entrantes/{idCiudad}")
+    public ModelAndView listarRutasEntrantes(@PathVariable("idCiudad") Long idCiudad) {
+        Ciudad ciudad = ciudadService.buscarCiudad(idCiudad);
+
+        ModelAndView modelAndView = new ModelAndView("rutas-ciudad-view");
+        modelAndView.addObject("ciudad", ciudad);
+        modelAndView.addObject("titulo", "Rutas Entrantes hacia " + ciudad.getNombre());
+        modelAndView.addObject("rutas", ciudad.getRutasEntrantes());
+
         return modelAndView;
     }
 
