@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${jugador.id != null} ? 'Editar' : 'Crear'">Formulario</title>
+</head>
+<body>
+    <h1 th:text="${jugador.id != null} ? 'Editar Jugador' : 'Crear Jugador'"></h1>
+    
+    <form th:action="${jugador.id != null} ? @{/jugador/update} : @{/jugador/save}" 
+          th:object="${jugador}" method="post">
+        
+        <!-- Campo oculto para ID -->
+        <input type="hidden" th:field="*{id}"/>
+        
+        <!-- Tipo de jugador (solo para creación) -->
+        <div th:if="${jugador.id == null}">
+            <label>Tipo:</label>
+            <input type="radio" name="tipo" value="caravanero" required
+                   onclick="mostrarCamposEspecificos('caravanero')"> Caravanero
+            <input type="radio" name="tipo" value="comerciante" required
+                   onclick="mostrarCamposEspecificos('comerciante')"> Comerciante
+        </div>
+
+        <!-- Campos comunes -->
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required/>
+        
+        <label>Tiempo Jugado:</label>
+        <input type="number" th:field="*{tiempoJugado}" required/>
+        
+        <!-- Campos específicos -->
+        <div id="caravaneroFields" style="display:none">
+            <label>Caravana:</label>
+            <select th:field="*{caravana}">
+                <option th:each="caravana : ${caravanas}" 
+                        th:value="${caravana.id}"
+                        th:text="${caravana.nombre}"></option>
+            </select>
+        </div>
+        
+        <div id="comercianteFields" style="display:none">
+            <label>Ciudad:</label>
+            <select th:field="*{ciudad}">
+                <option th:each="ciudad : ${ciudades}" 
+                        th:value="${ciudad.id}"
+                        th:text="${ciudad.nombre}"></option>
+            </select>
+        </div>
+        
+        <button type="submit">Guardar</button>
+        <a th:href="@{/jugador/list}">Cancelar</a>
+    </form>
+
+    <script>
+        function mostrarCamposEspecificos(tipo) {
+            document.getElementById('caravaneroFields').style.display = 
+                tipo === 'caravanero' ? 'block' : 'none';
+            document.getElementById('comercianteFields').style.display = 
+                tipo === 'comerciante' ? 'block' : 'none';
+        }
+        
+        // Mostrar campos al cargar (para edición)
+        document.addEventListener('DOMContentLoaded', function() {
+            const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
+            if(tipo) mostrarCamposEspecificos(tipo);
+        });
+    </script>
+</html>

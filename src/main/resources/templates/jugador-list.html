@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jugador List</title>
+</head>
+<body>
+    <h1>Jugador List</h1>
+    
+    <!-- Filtro por tipo -->
+    <form action="#" th:action="@{/jugador/list}" method="get">
+        <select name="tipo">
+            <option value="">Todos</option>
+            <option value="caravanero">Caravaneros</option>
+            <option value="comerciante">Comerciantes</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tiempo Jugado</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jugador : ${jugadores}">
+                <td th:text="${jugador.id}"></td>
+                <td th:text="${jugador.nombre}"></td>
+                <td th:text="${jugador.tiempoJugado}"></td>
+                <td>
+                    <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Caravanero)}">Caravanero</span>
+                    <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Comerciante)}">Comerciante</span>
+                </td>
+                <td>
+                    <a th:href="@{/jugador/view/{id}(id=${jugador.id})}">Ver</a>
+                    <a th:href="@{/jugador/edit/{id}(id=${jugador.id})}">Editar</a>
+                    <a th:href="@{/jugador/delete/{id}(id=${jugador.id})}">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <a href="/jugador/create">Crear Nuevo Jugador</a>
+</body>
+</html>
