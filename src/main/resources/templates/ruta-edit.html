@@ -14,8 +14,11 @@
         <label>Distancia:</label>
         <input type="text" id="distancia" name="distancia" th:value="${ruta.distancia}">
     
-        <label>¿Es segura?:</label>
-        <input type="text" id="segura" name="segura" th:value="${ruta.segura}">
+        <label>¿Es segura?</label>
+        <select name="segura">
+            <option value="true" th:selected="${ruta.segura == true}">Sí</option>
+            <option value="false" th:selected="${ruta.segura == false}">No</option>
+        </select>
     
         <label>Daño:</label>
         <input type="text" id="daño" name="daño" th:value="${ruta.daño}">
