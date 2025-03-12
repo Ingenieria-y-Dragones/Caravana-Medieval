@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${jugador.id != null} ? 'Editar' : 'Crear'">Formulario</title>
+    <title th:text="${jugador.id != null} ? 'Editar' : 'Crear'">Jugador</title>
 </head>
 <body>
     <h1 th:text="${jugador.id != null} ? 'Editar Jugador' : 'Crear Jugador'"></h1>
@@ -10,73 +9,55 @@
     <form th:action="${jugador.id != null} ? @{/jugador/update} : @{/jugador/save}" 
           method="post">
         
-        <!-- Campo oculto para ID -->
         <input type="hidden" th:field="*{id}"/>
-        
-        <!-- Tipo de jugador (solo para creación) -->
+
+        <!-- Tipo de jugador -->
         <div th:if="${jugador.id == null}">
-            <label>Tipo:</label>
-            <input type="radio" name="tipo" value="caravanero" required
-                   onclick="mostrarCamposEspecificos('caravanero')"> Caravanero
-            <input type="radio" name="tipo" value="comerciante" required
-                   onclick="mostrarCamposEspecificos('comerciante')"> Comerciante
-            <input type="radio" name="tipo" value="administrador" required
-                   onclick="mostrarCamposEspecificos('administrador')"> Administrador
+            <label>Rol:</label>
+            <select name="rol" required>
+                <option th:each="rol : ${roles}" 
+                        th:value="${rol}"
+                        th:text="${rol}"></option>
+            </select>
         </div>
 
         <!-- Campos comunes -->
         <label>Nombre:</label>
-        <input type="text" th:field="*{nombre}" required/>
+        <input type="text" name="nombre" th:value="*{nombre}" required/>
         
         <label>Tiempo Jugado:</label>
-        <input type="number" th:field="*{tiempoJugado}" required/>
-        
-        <!-- Campos específicos -->
-        <div id="caravaneroFields" style="display:none">
+        <input type="number" name="tiempoJugado" th:value="*{tiempoJugado}" required/>
+
+        <!-- Campos específicos según rol -->
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).CARAVANERO || jugador.id == null}">
             <label>Caravana:</label>
-            <select th:field="*{caravana}">
+            <select name="caravanaId">
                 <option th:each="caravana : ${caravanas}" 
                         th:value="${caravana.id}"
                         th:text="${caravana.nombre}"></option>
             </select>
         </div>
-        
-        <div id="comercianteFields" style="display:none">
+
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).COMERCIANTE || jugador.id == null}">
             <label>Ciudad:</label>
-            <select th:field="*{ciudad}">
+            <select name="ciudadId">
                 <option th:each="ciudad : ${ciudades}" 
                         th:value="${ciudad.id}"
                         th:text="${ciudad.nombre}"></option>
             </select>
         </div>
 
-        <div id="administradorFields" style="display:none">
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).ADMINISTRADOR || jugador.id == null}">
             <label>Sistema:</label>
-            <select th:field="*{sistema}">
+            <select name="sistemaId">
                 <option th:each="sistema : ${sistemas}" 
                         th:value="${sistema.id}"
                         th:text="${sistema.nombre}"></option>
             </select>
         </div>
-        
+
         <button type="submit">Guardar</button>
         <a th:href="@{/jugador/list}">Cancelar</a>
     </form>
-
-    <script>
-        function mostrarCamposEspecificos(tipo) {
-            document.getElementById('caravaneroFields').style.display = 
-                tipo === 'caravanero' ? 'block' : 'none';
-            document.getElementById('comercianteFields').style.display = 
-                tipo === 'comerciante' ? 'block' : 'none';
-            document.getElementById('administradorFields').style.display = 
-                tipo === 'administrador' ? 'block' : 'none';
-        }
-        
-        // Mostrar campos al cargar (para edición)
-        document.addEventListener('DOMContentLoaded', function() {
-            const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
-            if(tipo) mostrarCamposEspecificos(tipo);
-        });
-    </script>
+</body>
 </html>

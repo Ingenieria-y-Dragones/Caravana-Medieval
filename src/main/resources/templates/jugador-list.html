@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Jugador List</title>
+    <title>Listado de Jugadores</title>
 </head>
 <body>
-    <h1>Jugador List</h1>
+    <h1>Jugadores</h1>
     
-    <!-- Filtro por tipo -->
+    <!-- Filtro por rol -->
     <form action="#" th:action="@{/jugador/list}" method="get">
-        <select name="tipo">
+        <select name="rol">
             <option value="">Todos</option>
-            <option value="caravanero">Caravaneros</option>
-            <option value="comerciante">Comerciantes</option>
-            <option value="administrador">Administrador</option>
+            <option th:each="rol : ${roles}" 
+                    th:value="${rol}"
+                    th:text="${rol}"></option>
         </select>
         <button type="submit">Filtrar</button>
     </form>
@@ -23,8 +22,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Tiempo Jugado</th>
-                <th>Tipo</th>
+                <th>Rol</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -32,11 +30,7 @@
             <tr th:each="jugador : ${jugadores}">
                 <td th:text="${jugador.id}"></td>
                 <td th:text="${jugador.nombre}"></td>
-                <td th:text="${jugador.tiempoJugado}"></td>
-                <td>
-                    <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Caravanero)}">Caravanero</span>
-                    <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Comerciante)}">Comerciante</span>
-                </td>
+                <td th:text="${jugador.rol}"></td>
                 <td>
                     <a th:href="@{/jugador/view/{id}(id=${jugador.id})}">Ver</a>
                     <a th:href="@{/jugador/edit/{id}(id=${jugador.id})}">Editar</a>

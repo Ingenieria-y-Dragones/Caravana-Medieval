@@ -13,9 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import co.edu.javeriana.caravana.model.Caravana;
-import co.edu.javeriana.caravana.model.Caravanero;
 import co.edu.javeriana.caravana.model.Ciudad;
-import co.edu.javeriana.caravana.model.Comerciante;
 import co.edu.javeriana.caravana.model.Jugador;
 import co.edu.javeriana.caravana.model.Mapa;
 import co.edu.javeriana.caravana.model.Producto;
@@ -33,28 +31,20 @@ import co.edu.javeriana.caravana.repository.SistemaRepository;
 
 @Component
 public class DbInitializer implements CommandLineRunner {
-
     @Autowired
     private ProductoRepository productoRepository;
-
     @Autowired
     private CiudadRepository ciudadRepository;
-
     @Autowired
     private RutaRepository rutaRepository;
-
     @Autowired
     private MapaRepository mapaRepository;
-
     @Autowired
     private ServicioRepository servicioRepository;
-
     @Autowired
     private CaravanaRepository caravanaRepository;
-
     @Autowired
     private JugadorRepository jugadorRepository;
-
     @Autowired
     private SistemaRepository sistemaRepository;
 
@@ -64,23 +54,20 @@ public class DbInitializer implements CommandLineRunner {
     );
 
     private final List<String> nombresCiudades = Arrays.asList(
-        "Akkadia", "Babiria", "Carthagos", "Damashq", "Elisium", "Farsia", "Gadir", "Heliopolis", "Iskandria", "Jerash",
-        "Kushar", "Lidonia", "Memphis", "Nineveh", "Ophir", "Palmyra", "Quirhazar", "Rhodon", "Sidonia", "Tarsos",
-        "Urkesh", "Vashtan", "Xandria", "Yamatai", "Zaragoza", "Arbela", "Byblos", "Cyrene", "Dura-Europos", "Ebla",
-        "Ferghana", "Gordion", "Hattusa", "Itanos", "Jiroft", "Kalhu", "Laranda", "Mari", "Nisa", "Opis", "Pergamon",
-        "Qatna", "Ragae", "Salamis", "Thapsos", "Ugarit", "Volubilis", "Waset", "Xanthi", "Yamkhad", "Zabala",
-        "Antioquía", "Bosra", "Castra", "Damasco", "Ecbatana", "Fars", "Gerasa", "Hierápolis", "Iol-Caesarea", "Judea",
-        "Karkemish", "Libarna", "Medina", "Naukratis", "Oea", "Patara", "Qadesh", "Roma", "Seleucia", "Tebas",
-        "Uqair", "Viminacium", "Xanthos", "Yazd", "Zafar", "Avaris", "Borsippa", "Ctesifonte", "Dion", "Erythrae",
-        "Fustat", "Gergovia", "Hatra", "Ilion", "Jaffa", "Kition", "Lampsaco", "Ma'rib", "Neapolis", "Olbia", "Petra",
-        "Qom", "Raqqa", "Sais", "Tanais", "Ur", "Vienne", "Xois", "Yabrud", "Zama"
+        "Akkadia", "Babiria", "Carthagos", "Damashq", "Elisium", "Farsia", "Gadir", 
+        "Heliopolis", "Iskandria", "Jerash", "Kushar", "Lidonia", "Memphis", "Nineveh", 
+        "Ophir", "Palmyra", "Quirhazar", "Rhodon", "Sidonia", "Tarsos", "Urkesh", 
+        "Vashtan", "Xandria", "Yamatai", "Zaragoza", "Arbela", "Byblos", "Cyrene", 
+        "Dion", "Ebla", "Ferghana", "Gordion", "Hattusa", "Itanos", "Jaffa", "Kition", 
+        "Lampsaco", "Ma'rib", "Neapolis", "Olbia", "Petra", "Qom", "Ragae", "Sais", 
+        "Tanais", "Ur", "Vienne", "Xois", "Yabrud", "Zama"
     );
 
     @Override
     public void run(String... args) throws Exception {
         Random random = new Random();
         
-        // Generar productos
+        // 1. Generar productos
         List<Producto> productos = List.of(
             new Producto(null, "Especias", 50),
             new Producto(null, "Seda", 30),
@@ -135,27 +122,27 @@ public class DbInitializer implements CommandLineRunner {
         );
         productoRepository.saveAll(productos);
 
-        // Generar ciudades
+        // 2. Generar ciudades
         List<Ciudad> ciudades = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             Map<Producto, Integer> stock = new HashMap<>();
             Map<Producto, Double> factoresDemanda = new HashMap<>();
             Map<Producto, Double> factoresOferta = new HashMap<>();
-
+            
             for (Producto producto : productos) {
                 stock.put(producto, random.nextInt(100) + 1);
                 factoresDemanda.put(producto, 0.5 + (random.nextDouble() * 1.5));
                 factoresOferta.put(producto, 0.5 + (random.nextDouble() * 1.5));
             }
-
+            
             List<Servicio> servicios = generarServicios();
             servicioRepository.saveAll(servicios);
-
+            
             Ciudad ciudad = new Ciudad(
                 factoresDemanda, 
                 factoresOferta, 
                 null, 
-                nombresCiudades.get(i), // Usa nombres de la lista
+                nombresCiudades.get(i % nombresCiudades.size()), // Corrección para evitar IndexOutOfBoundsException
                 random.nextDouble() * 0.2 + 0.05, 
                 stock, 
                 servicios
@@ -164,77 +151,122 @@ public class DbInitializer implements CommandLineRunner {
         }
         ciudadRepository.saveAll(ciudades);
 
-        // Generar rutas aleatorias entre ciudades
+        // 3. Generar rutas aleatorias entre ciudades
         List<Ruta> rutas = new ArrayList<>();
         for (Ciudad ciudad : ciudades) {
             int rutasPorCiudad = random.nextInt(4) + 2;
             for (int j = 0; j < rutasPorCiudad; j++) {
                 Ciudad destino = ciudades.get(random.nextInt(ciudades.size()));
                 if (!ciudad.equals(destino)) {
-                    String nombre = "Ruta " + ciudad.getNombre() + " - " + destino.getNombre(); // Generar nombre dinámico
-                    Ruta ruta = new Ruta(null, nombre, ciudad, destino, 50.0 + random.nextDouble() * 450.0, random.nextBoolean(), random.nextInt(20));
+                    String nombre = "Ruta " + ciudad.getNombre() + " – " + destino.getNombre();
+                    Ruta ruta = new Ruta(
+                        null, 
+                        nombre, 
+                        ciudad, 
+                        destino, 
+                        50.0 + random.nextDouble() * 450.0, 
+                        random.nextBoolean(), 
+                        random.nextInt(20)
+                    );
                     rutas.add(ruta);
                     ciudad.agregarRutaSaliente(ruta);
                 }
             }
         }
         rutaRepository.saveAll(rutas);
-        ciudadRepository.saveAll(ciudades); // Guardar las ciudades con rutas
+        ciudadRepository.saveAll(ciudades); // Guardar ciudades con rutas actualizadas
 
-
-        // 3. Generar un mapa
+        // 4. Generar mapa
         Mapa mapa = new Mapa(null);
         mapa.setCiudades(new HashSet<>(ciudades));
         mapaRepository.save(mapa);
 
-        // 4. Generar caravanas
+        // 5. Generar caravanas
         List<Caravana> caravanas = generarCaravanas(ciudades, productos);
         caravanaRepository.saveAll(caravanas);
 
-        // 5. Generar jugadores (comerciantes y caravaneros)
+        // 6. Generar jugadores (ahora usando la entidad Jugador)
         List<Jugador> jugadores = new ArrayList<>();
 
-        // 5 comerciantes en ciudades aleatorias
+        // Comerciantes
         for (int i = 0; i < 5; i++) {
             Ciudad ciudadAsignada = ciudades.get(random.nextInt(ciudades.size()));
-            Jugador comerciante = new Comerciante(null, nombresJugadores.get(i), random.nextLong(100, 1000), ciudadAsignada);
+            Jugador comerciante = new Jugador(
+                null, 
+                nombresJugadores.get(i), 
+                random.nextLong(100, 1000), 
+                Jugador.TipoRol.COMERCIANTE // Rol asignado
+            );
+            comerciante.setCiudad(ciudadAsignada); // Ciudad asignada
             jugadores.add(comerciante);
         }
 
-        // 5 caravaneros en caravanas aleatorias
+        // Caravaneros
         for (int i = 5; i < 10; i++) {
             Caravana caravanaAsignada = caravanas.get(random.nextInt(caravanas.size()));
-            Jugador caravanero = new Caravanero(null, nombresJugadores.get(i), random.nextLong(100, 1000), caravanaAsignada);
+            Jugador caravanero = new Jugador(
+                null, 
+                nombresJugadores.get(i), 
+                random.nextLong(100, 1000), 
+                Jugador.TipoRol.CARAVANERO // Rol asignado
+            );
+            caravanero.setCaravana(caravanaAsignada); // Caravana asignada
             jugadores.add(caravanero);
-            caravanaAsignada.getJugadores().add(caravanero); // Agregar caravanero a la caravana
+            caravanaAsignada.getJugadores().add(caravanero); // Relación bidireccional
         }
-        jugadorRepository.saveAll(jugadores);
-        caravanaRepository.saveAll(caravanas); // Guardar caravanas con sus caravaneros
 
-        // 6. Generar el sistema de juego
-        Sistema sistema = new Sistema(caravanas, 10000.0, null, List.of(mapa), 3600L, productos);
+        jugadorRepository.saveAll(jugadores);
+        caravanaRepository.saveAll(caravanas); // Guardar caravanas con jugadores
+
+        // 7. Generar sistema
+        Sistema sistema = new Sistema(
+            caravanas, 
+            10000.0, 
+            null, 
+            List.of(mapa), 
+            3600L, 
+            productos
+        );
         sistemaRepository.save(sistema);
     }
-    // Generar servicios
+
+    // Generar servicios (sin cambios)
     private List<Servicio> generarServicios() {
         Random random = new Random();
         List<Servicio> servicios = new ArrayList<>();
         for (Servicio.TipoServicio tipo : Servicio.TipoServicio.values()) {
-            if (random.nextBoolean()) { // 50% de probabilidad de agregar el servicio
-                servicios.add(new Servicio(random.nextDouble() * 100 + 50, null, tipo));
+            if (random.nextBoolean()) {
+                servicios.add(new Servicio(
+                    random.nextDouble() * 100 + 50, 
+                    null, 
+                    tipo
+                ));
             }
         }
         return servicios;
     }
 
+    // Generar caravanas (adaptado para Jugador)
     private List<Caravana> generarCaravanas(List<Ciudad> ciudades, List<Producto> productos) {
         Random random = new Random();
         List<Caravana> caravanas = new ArrayList<>();
-
         for (int i = 0; i < 5; i++) {
             Ciudad ciudadInicio = ciudades.get(random.nextInt(ciudades.size()));
-            List<Producto> inventario = List.of(productos.get(random.nextInt(productos.size())));
-            Caravana caravana = new Caravana(100.0f, ciudadInicio, 500, 100, null, inventario, new ArrayList<>(), "Caravana " + (i + 1), random.nextBoolean(), random.nextInt(20) + 10);
+            List<Producto> inventario = new ArrayList<>();
+            inventario.add(productos.get(random.nextInt(productos.size())));
+            
+            Caravana caravana = new Caravana(
+                100.0f, 
+                ciudadInicio, 
+                500, 
+                100, 
+                null, 
+                inventario, 
+                new ArrayList<>(), // Jugadores se asignan después
+                "Caravana " + (i + 1), 
+                random.nextBoolean(), 
+                random.nextInt(20) + 10
+            );
             caravanas.add(caravana);
         }
         return caravanas;

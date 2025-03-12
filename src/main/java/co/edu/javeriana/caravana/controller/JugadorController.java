@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import co.edu.javeriana.caravana.model.Administrador;
-import co.edu.javeriana.caravana.model.Caravanero;
-import co.edu.javeriana.caravana.model.Comerciante;
 import co.edu.javeriana.caravana.model.Jugador;
 import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
@@ -35,21 +32,13 @@ public class JugadorController {
     private SistemaRepository sistemaRepo;
 
     @GetMapping("/list")
-    public String listAll(@RequestParam(required = false) String tipo, Model model) {
-        List<Jugador> jugadores;
-        
-        if (tipo == null) {
-            jugadores = jugadorService.findAll();
-        } else {
-            jugadores = switch (tipo.toLowerCase()) {
-                case "caravanero" -> jugadorService.findAllCaravaneros();
-                case "comerciante" -> jugadorService.findAllComerciantes();
-                case "administrador" -> jugadorService.findAllAdministradores();
-                default -> jugadorService.findAll();
-            };
-        }
+    public String listAll(@RequestParam(required = false) Jugador.TipoRol rol, Model model) {
+        List<Jugador> jugadores = (rol == null) 
+            ? jugadorService.findAll() 
+            : jugadorService.findByRol(rol);
         
         model.addAttribute("jugadores", jugadores);
+        model.addAttribute("roles", Jugador.TipoRol.values()); // Para el filtro
         return "jugador-list";
     }
 
@@ -58,19 +47,20 @@ public class JugadorController {
         model.addAttribute("caravanas", caravanaRepo.findAll());
         model.addAttribute("ciudades", ciudadRepo.findAll());
         model.addAttribute("sistemas", sistemaRepo.findAll());
+        model.addAttribute("roles", Jugador.TipoRol.values());
         return "jugador-form";
     }
 
     @PostMapping("/save")
     public String save(
-        @RequestParam String tipo,
         @RequestParam String nombre,
         @RequestParam Long tiempoJugado,
+        @RequestParam Jugador.TipoRol rol,
         @RequestParam(required = false) Long caravanaId,
         @RequestParam(required = false) Long ciudadId,
         @RequestParam(required = false) Long sistemaId
     ) {
-        jugadorService.createJugador(tipo, nombre, tiempoJugado, caravanaId, ciudadId, sistemaId);
+        jugadorService.createJugador(nombre, tiempoJugado, rol, caravanaId, ciudadId, sistemaId);
         return "redirect:/jugador/list";
     }
 
@@ -78,9 +68,6 @@ public class JugadorController {
     public String view(@PathVariable Long id, Model model) {
         Jugador jugador = jugadorService.findById(id);
         model.addAttribute("jugador", jugador);
-        model.addAttribute("esCaravanero", jugador instanceof Caravanero);
-        model.addAttribute("esComerciante", jugador instanceof Comerciante);
-        model.addAttribute("esAdministrador", jugador instanceof Administrador);
         return "jugador-view";
     }
 
@@ -91,6 +78,7 @@ public class JugadorController {
         model.addAttribute("caravanas", caravanaRepo.findAll());
         model.addAttribute("ciudades", ciudadRepo.findAll());
         model.addAttribute("sistemas", sistemaRepo.findAll());
+        model.addAttribute("roles", Jugador.TipoRol.values());
         return "jugador-form";
     }
 
@@ -100,9 +88,9 @@ public class JugadorController {
         return "redirect:/jugador/list";
     }
 
-    /*@GetMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        jugadorService.delete(id);
+        jugadorService.deleteById(id);
         return "redirect:/jugador/list";
-    }*/
+    }
 }

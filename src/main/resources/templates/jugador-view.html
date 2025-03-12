@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Jugador View</title>
+    <title>Detalle de Jugador</title>
 </head>
 <body>
     <h1>Detalle de Jugador</h1>
@@ -11,21 +10,17 @@
         <li>ID: <span th:text="${jugador.id}"></span></li>
         <li>Nombre: <span th:text="${jugador.nombre}"></span></li>
         <li>Tiempo Jugado: <span th:text="${jugador.tiempoJugado}"></span></li>
-        <li>Tipo: 
-            <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Caravanero)}">Caravanero</span>
-            <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Comerciante)}">Comerciante</span>
-            <span th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Administrador)}">Administrador</span>
+        <li>Rol: <span th:text="${jugador.rol}"></span></li>
+
+        <!-- Información específica según rol -->
+        <li th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).CARAVANERO}">
+            Caravana: <span th:text="${jugador.caravana.nombre}"></span>
         </li>
-        
-        <!-- Información específica por tipo -->
-        <li th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Caravanero)}">
-            Caravana: <span th:text="${((co.edu.javeriana.caravana.model.Caravanero)jugador).caravana.nombre}"></span>
+        <li th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).COMERCIANTE}">
+            Ciudad: <span th:text="${jugador.ciudad.nombre}"></span>
         </li>
-        <li th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Comerciante)}">
-            Ciudad: <span th:text="${((co.edu.javeriana.caravana.model.Comerciante)jugador).ciudad.nombre}"></span>
-        </li>
-        <li th:if="${jugador instanceof T(co.edu.javeriana.caravana.model.Administrador)}">
-            Sistema: <span th:text="${((co.edu.javeriana.caravana.model.Administrador)jugador).sistema.nombre}"></span>
+        <li th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).ADMINISTRADOR}">
+            Sistema: <span th:text="${jugador.sistema.nombre}"></span>
         </li>
     </ul>
     

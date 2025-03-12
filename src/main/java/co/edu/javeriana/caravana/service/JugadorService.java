@@ -5,13 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.edu.javeriana.caravana.model.Administrador;
-import co.edu.javeriana.caravana.model.Caravana;
-import co.edu.javeriana.caravana.model.Caravanero;
-import co.edu.javeriana.caravana.model.Ciudad;
-import co.edu.javeriana.caravana.model.Comerciante;
 import co.edu.javeriana.caravana.model.Jugador;
-import co.edu.javeriana.caravana.model.Sistema;
 import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
 import co.edu.javeriana.caravana.repository.JugadorRepository;
@@ -37,46 +31,24 @@ public class JugadorService {
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
     }
 
-    public Jugador createJugador(String tipo, String nombre, Long tiempoJugado, 
+    public Jugador createJugador(String nombre, Long tiempoJugado, Jugador.TipoRol rol,
                                 Long caravanaId, Long ciudadId, Long sistemaId) {
-        return jugadorRepo.save(crearSubclase(tipo, nombre, tiempoJugado, caravanaId, ciudadId, sistemaId));
-    }
+        Jugador jugador = new Jugador();
+        jugador.setNombre(nombre);
+        jugador.setTiempoJugado(tiempoJugado);
+        jugador.setRol(rol);
 
-    private Jugador crearSubclase(String tipo, String nombre, Long tiempoJugado, 
-                                Long caravanaId, Long ciudadId, Long sistemaId) {
-        switch(tipo.toLowerCase()) {
-            case "caravanero" -> {
-                Caravana caravana = caravanaRepo.findById(caravanaId)
-                        .orElseThrow(() -> new RuntimeException("Caravana no encontrada"));
-                return new Caravanero(null, nombre, tiempoJugado, caravana);
-            }
-                
-            case "comerciante" -> {
-                Ciudad ciudad = ciudadRepo.findById(ciudadId)
-                        .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
-                return new Comerciante(null, nombre, tiempoJugado, ciudad);
-            }
-                
-            case "administrador" -> {
-                Sistema sistema = sistemaRepo.findById(sistemaId)
-                        .orElseThrow(() -> new RuntimeException("Sistema no encontrado"));
-                return new Administrador(null, nombre, tiempoJugado, sistema);
-            }
-                
-            default -> throw new IllegalArgumentException("Tipo de jugador desconocido");
+        // Asignar relación según rol
+        switch(rol) {
+            case CARAVANERO -> jugador.setCaravana(caravanaRepo.findById(caravanaId)
+                        .orElseThrow(() -> new RuntimeException("Caravana no encontrada")));
+            case COMERCIANTE -> jugador.setCiudad(ciudadRepo.findById(ciudadId)
+                        .orElseThrow(() -> new RuntimeException("Ciudad no encontrada")));
+            case ADMINISTRADOR -> jugador.setSistema(sistemaRepo.findById(sistemaId)
+                        .orElseThrow(() -> new RuntimeException("Sistema no encontrado")));
         }
-    }
 
-    public List<Jugador> findAllCaravaneros() {
-        return jugadorRepo.findAllCaravaneros();
-    }
-
-    public List<Jugador> findAllComerciantes() {
-        return jugadorRepo.findAllComerciantes();
-    }
-
-    public List<Jugador> findAllAdministradores() {
-        return jugadorRepo.findAllAdministradores();
+        return jugadorRepo.save(jugador);
     }
 
     public void deleteById(Long id) {
@@ -87,6 +59,19 @@ public class JugadorService {
         Jugador jugador = findById(id);
         jugador.setNombre(jugadorActualizado.getNombre());
         jugador.setTiempoJugado(jugadorActualizado.getTiempoJugado());
+
+        // Actualizar relación según rol
+        switch(jugador.getRol()) {
+            case CARAVANERO -> jugador.setCaravana(jugadorActualizado.getCaravana());
+            case COMERCIANTE -> jugador.setCiudad(jugadorActualizado.getCiudad());
+            case ADMINISTRADOR -> jugador.setSistema(jugadorActualizado.getSistema());
+        }
+
         return jugadorRepo.save(jugador);
+    }
+
+    // Métodos para filtrar por rol
+    public List<Jugador> findByRol(Jugador.TipoRol rol) {
+        return jugadorRepo.findByRol(rol);
     }
 }
