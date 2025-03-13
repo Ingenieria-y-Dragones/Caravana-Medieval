@@ -4,10 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruta List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-view { background-color: #3498db; }
+        .btn-edit { background-color: #f39c12; }
+        .btn-delete { background-color: #e74c3c; }
+        .btn-create {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
     <h1>Ruta List</h1>
-    <p><a th:href="@{/ruta/create}">Crear Ruta</a></p>
+    <a class="btn-create" th:href="@{/ruta/create}">Crear Ruta</a>
     <table>
         <thead>
             <tr>
@@ -17,9 +57,7 @@
                 <th>¿Es segura?</th>
                 <th>Ciudad de Origen</th>
                 <th>Ciudad de Destino</th>
-                <th>View</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -31,13 +69,9 @@
                 <td th:text="${ruta.ciudadOrigen}"></td>
                 <td th:text="${ruta.ciudadDestino}"></td>
                 <td>
-                    <a th:href="@{/ruta/view/{id}(id=${ruta.id})}">Ver</a>
-                </td>
-                <td>
-                    <a th:href="@{/ruta/edit/{id}(id=${ruta.id})}">Editar</a>
-                </td>
-                <td>
-                    <a th:href="@{/ruta/delete/{id}(id=${ruta.id})}">Borrar</a>
+                    <a class="btn btn-view" th:href="@{/ruta/view/{id}(id=${ruta.id})}">Ver</a>
+                    <a class="btn btn-edit" th:href="@{/ruta/edit/{id}(id=${ruta.id})}">Editar</a>
+                    <a class="btn btn-delete" th:href="@{/ruta/delete/{id}(id=${ruta.id})}">Borrar</a>
                 </td>
             </tr>
         </tbody>

@@ -33,7 +33,7 @@ public class RutaService {
         rutaRepository.save(ruta);
     }
 
-    public void borrarPersona(Long id) {
+    public void borrarRuta(Long id) {
         rutaRepository.deleteById(id);
     }
     

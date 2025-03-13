@@ -190,16 +190,16 @@ public class DbInitializer implements CommandLineRunner {
 
 
 
-        // 3. Generar un mapa
+        // Generar un mapa
         Mapa mapa = new Mapa(null);
         mapa.setCiudades(new HashSet<>(ciudades));
         mapaRepository.save(mapa);
 
-        // 4. Generar caravanas
+        // Generar caravanas
         List<Caravana> caravanas = generarCaravanas(ciudades, productos);
         caravanaRepository.saveAll(caravanas);
 
-        // 5. Generar jugadores (comerciantes y caravaneros)
+        // Generar jugadores (comerciantes y caravaneros)
         List<Jugador> jugadores = new ArrayList<>();
 
         // 5 comerciantes en ciudades aleatorias
@@ -219,7 +219,7 @@ public class DbInitializer implements CommandLineRunner {
         jugadorRepository.saveAll(jugadores);
         caravanaRepository.saveAll(caravanas); // Guardar caravanas con sus caravaneros
 
-        // 6. Generar el sistema de juego
+        // Generar el sistema de juego
         Sistema sistema = new Sistema(caravanas, 10000.0, null, List.of(mapa), 3600L, productos);
         sistemaRepository.save(sistema);
     }

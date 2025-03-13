@@ -43,7 +43,8 @@ public class RutaController {
 
     @GetMapping("/create")
     public ModelAndView formularioCrearRuta() {
-        List<Ciudad> ciudades = ciudadService.listarCiudades(); // Obtener la lista de ciudades
+        List<Ciudad> ciudades = ciudadService.listarCiudadesEntidad();
+
         ModelAndView modelAndView = new ModelAndView("ruta-edit");
         modelAndView.addObject("ruta", new RutaDTO());
         modelAndView.addObject("ciudades", ciudades);
@@ -53,7 +54,8 @@ public class RutaController {
     @GetMapping("/edit/{idRuta}")
     public ModelAndView formularioEditarRuta(@PathVariable("idRuta") Long id) {
         RutaDTO ruta = rutaService.buscarRuta(id).orElseThrow();
-        List<Ciudad> ciudades = ciudadService.listarCiudades(); // Obtener la lista de ciudades
+        List<Ciudad> ciudades = ciudadService.listarCiudadesEntidad();
+
         ModelAndView modelAndView = new ModelAndView("ruta-edit");
         modelAndView.addObject("ruta", ruta);
         modelAndView.addObject("ciudades", ciudades);
@@ -68,8 +70,8 @@ public class RutaController {
     }
 
     @GetMapping("/delete/{id}")
-    public RedirectView borrarPersona(@PathVariable Long id) {
-        rutaService.borrarPersona(id);
+    public RedirectView borrarRuta(@PathVariable Long id) {
+        rutaService.borrarRuta(id);
         return new RedirectView("/ruta/list");
 
     }

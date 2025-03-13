@@ -6,11 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
 
@@ -25,12 +27,15 @@ public class Ciudad {
     private Double impuesto;
 
     @ElementCollection
+    @CollectionTable(name = "ciudad_productos_disponibles", joinColumns = @JoinColumn(name = "ciudad_id"))
     private Map<Producto, Integer> productosDisponibles; //Stock
 
     @ElementCollection
+    @CollectionTable(name = "ciudad_factores_demanda", joinColumns = @JoinColumn(name = "ciudad_id"))
     private Map<Producto, Double> factoresDemanda; // FD por producto
 
     @ElementCollection
+    @CollectionTable(name = "ciudad_factores_oferta", joinColumns = @JoinColumn(name = "ciudad_id"))
     private Map<Producto, Double> factoresOferta; // FO por producto
 
     @OneToMany

@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
-import co.edu.javeriana.caravana.model.Ciudad;
+import co.edu.javeriana.caravana.dto.CiudadDTO;
 import co.edu.javeriana.caravana.service.CiudadService;
 
 @Controller
@@ -19,46 +21,52 @@ public class CiudadController {
     private CiudadService ciudadService;
 
     @GetMapping("/list")
-    public ModelAndView listarCiudades(){
-        List<Ciudad> ciudades = ciudadService.listarCiudades();
-        
+    public ModelAndView listarCiudades() {
+        List<CiudadDTO> ciudades = ciudadService.listarCiudades();
         ModelAndView modelAndView = new ModelAndView("ciudad-list");
         modelAndView.addObject("ciudades", ciudades);
         return modelAndView;
     }
-
     @GetMapping("/view/{idCiudad}")
     public ModelAndView buscarCiudad(@PathVariable("idCiudad") Long id) {
-        Ciudad ciudad = ciudadService.buscarCiudad(id);
+        CiudadDTO ciudad = ciudadService.buscarCiudad(id);
         ModelAndView modelAndView = new ModelAndView("ciudad-view");
-
         modelAndView.addObject("ciudad", ciudad);
         return modelAndView;
     }
 
-    @GetMapping("/view/ruta/salientes/{idCiudad}")
-    public ModelAndView listarRutasSalientes(@PathVariable("idCiudad") Long idCiudad) {
-        Ciudad ciudad = ciudadService.buscarCiudad(idCiudad);
 
-        ModelAndView modelAndView = new ModelAndView("rutas-ciudad-view");
-        modelAndView.addObject("ciudad", ciudad);
-        modelAndView.addObject("titulo", "Rutas Salientes desde " + ciudad.getNombre());
-        modelAndView.addObject("rutas", ciudad.getRutasSalientes());
-
+    @GetMapping("/create")
+    public ModelAndView formularioCrearCiudad() {
+        ModelAndView modelAndView = new ModelAndView("ciudad-edit");
+        modelAndView.addObject("ciudad", new CiudadDTO());
         return modelAndView;
     }
 
-
-    @GetMapping("/view/ruta/entrantes/{idCiudad}")
-    public ModelAndView listarRutasEntrantes(@PathVariable("idCiudad") Long idCiudad) {
-        Ciudad ciudad = ciudadService.buscarCiudad(idCiudad);
-
-        ModelAndView modelAndView = new ModelAndView("rutas-ciudad-view");
+    @GetMapping("/edit/{idCiudad}")
+    public ModelAndView formularioEditarCiudad(@PathVariable("idCiudad") Long id) {
+        CiudadDTO ciudad = ciudadService.buscarCiudad(id);
+        ModelAndView modelAndView = new ModelAndView("ciudad-edit");
         modelAndView.addObject("ciudad", ciudad);
-        modelAndView.addObject("titulo", "Rutas Entrantes hacia " + ciudad.getNombre());
-        modelAndView.addObject("rutas", ciudad.getRutasEntrantes());
-
         return modelAndView;
     }
 
+    @PostMapping("/update/{idCiudad}")
+    public RedirectView actualizarCiudad(@PathVariable("idCiudad") Long id, CiudadDTO ciudadDTO) {
+        ciudadService.actualizarCiudad(id, ciudadDTO);
+        return new RedirectView("/ciudad/list");
+    }
+
+    @PostMapping("/save")
+    public RedirectView guardarCiudad(CiudadDTO ciudadDTO) {
+        ciudadService.guardarCiudad(ciudadDTO);
+        return new RedirectView("/ciudad/list");
+    }
+
+    @GetMapping("/delete/{idCiudad}")
+    public RedirectView eliminarCiudad(@PathVariable("idCiudad") Long id) {
+        ciudadService.eliminarCiudad(id);
+        return new RedirectView("/ciudad/list");
+    }
 }
+
