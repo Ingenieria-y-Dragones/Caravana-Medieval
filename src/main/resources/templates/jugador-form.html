@@ -9,9 +9,8 @@
     <form th:action="${jugador.id != null} ? @{/jugador/update} : @{/jugador/save}" 
           method="post">
         
-        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:if="${jugador.id != null}" th:value="${jugador.id}" name="id"/>
 
-        <!-- Tipo de jugador -->
         <div th:if="${jugador.id == null}">
             <label>Rol:</label>
             <select name="rol" required>
@@ -23,41 +22,66 @@
 
         <!-- Campos comunes -->
         <label>Nombre:</label>
-        <input type="text" name="nombre" th:value="*{nombre}" required/>
+        <input type="text" name="nombre" th:value="${jugador.nombre}" required/>
         
         <label>Tiempo Jugado:</label>
-        <input type="number" name="tiempoJugado" th:value="*{tiempoJugado}" required/>
+        <input type="number" name="tiempoJugado" th:value="${jugador.tiempoJugado}" required/>
 
         <!-- Campos específicos según rol -->
-        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).CARAVANERO || jugador.id == null}">
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).CARAVANERO || (jugador.id == null && rol == 'CARAVANERO')}">
             <label>Caravana:</label>
             <select name="caravanaId">
                 <option th:each="caravana : ${caravanas}" 
                         th:value="${caravana.id}"
-                        th:text="${caravana.nombre}"></option>
+                        th:text="${caravana.nombre}"
+                        th:selected="${jugador.caravana != null} ? ${caravana.id == jugador.caravana.id} : false"></option>
             </select>
         </div>
 
-        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).COMERCIANTE || jugador.id == null}">
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).COMERCIANTE || (jugador.id == null && rol == 'COMERCIANTE')}">
             <label>Ciudad:</label>
             <select name="ciudadId">
                 <option th:each="ciudad : ${ciudades}" 
                         th:value="${ciudad.id}"
-                        th:text="${ciudad.nombre}"></option>
+                        th:text="${ciudad.nombre}"
+                        th:selected="${jugador.ciudad != null} ? ${ciudad.id == jugador.ciudad.id} : false"></option>
             </select>
         </div>
 
-        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).ADMINISTRADOR || jugador.id == null}">
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).ADMINISTRADOR || (jugador.id == null && rol == 'ADMINISTRADOR')}">
             <label>Sistema:</label>
             <select name="sistemaId">
                 <option th:each="sistema : ${sistemas}" 
                         th:value="${sistema.id}"
-                        th:text="${sistema.nombre}"></option>
+                        th:text="${sistema.nombre}"
+                        th:selected="${jugador.sistema != null} ? ${sistema.id == jugador.sistema.id} : false"></option>
             </select>
         </div>
 
         <button type="submit">Guardar</button>
         <a th:href="@{/jugador/list}">Cancelar</a>
     </form>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const rol = document.querySelector('select[name="rol"]')?.value || 
+                        '[(${jugador.rol})]';
+            
+            if (rol) {
+                mostrarCamposEspecificos(rol);
+            }
+        });
+
+        function mostrarCamposEspecificos(rol) {
+            document.querySelectorAll('div[id$="Fields"]').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            if (rol) {
+                document.getElementById(rol.toLowerCase() + 'Fields').style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

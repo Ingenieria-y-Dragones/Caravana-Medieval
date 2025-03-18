@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,7 @@ public class JugadorController {
             : jugadorService.findByRol(rol);
         
         model.addAttribute("jugadores", jugadores);
-        model.addAttribute("roles", Jugador.TipoRol.values()); // Para el filtro
+        model.addAttribute("roles", Jugador.TipoRol.values());
         return "jugador-list";
     }
 
@@ -83,8 +82,16 @@ public class JugadorController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Jugador jugador) {
-        jugadorService.update(jugador.getId(), jugador);
+    public String update(
+        @RequestParam Long id,
+        @RequestParam String nombre,
+        @RequestParam Long tiempoJugado,
+        @RequestParam Jugador.TipoRol rol,
+        @RequestParam(required = false) Long caravanaId,
+        @RequestParam(required = false) Long ciudadId,
+        @RequestParam(required = false) Long sistemaId
+    ) {
+        jugadorService.updateJugador(id, nombre, tiempoJugado, rol, caravanaId, ciudadId, sistemaId);
         return "redirect:/jugador/list";
     }
 
