@@ -1,19 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Ciudades</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-view { background-color: #3498db; }
+        .btn-edit { background-color: #f39c12; }
+        .btn-delete { background-color: #e74c3c; }
+        .btn-create {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
+
     <h1>Lista de Ciudades</h1>
-    <table border="1">
+
+    <!-- Botón para agregar una nueva ciudad -->
+    <a class="btn-create" href="/ciudad/create">Agregar Ciudad</a>
+
+    <table>
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Impuesto</th>
-                <th>Rutas Salientes</th>
-                <th>Ver Detalle</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -21,13 +65,14 @@
                 <td th:text="${ciudad.nombre}"></td>
                 <td th:text="${ciudad.impuesto}"></td>
                 <td>
-                    <a th:href="@{/ciudad/view/ruta/{idCiudad}(idCiudad=${ciudad.id})}">Ver Rutas</a>
-                </td>
-                <td>
-                    <a th:href="@{/ciudad/view/{idCiudad}(idCiudad=${ciudad.id})}">Ver Ciudad</a>
+                    <a class="btn btn-view" th:href="@{/ciudad/view/{idCiudad}(idCiudad=${ciudad.id})}">Ver</a>
+                    <a class="btn btn-edit" th:href="@{/ciudad/edit/{idCiudad}(idCiudad=${ciudad.id})}">Editar</a>
+                    <a class="btn btn-delete" th:href="@{/ciudad/delete/{idCiudad}(idCiudad=${ciudad.id})}">Eliminar</a>
                 </td>
             </tr>
         </tbody>
     </table>
+
 </body>
 </html>
+

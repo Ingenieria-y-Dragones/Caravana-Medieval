@@ -2,10 +2,14 @@ package co.edu.javeriana.caravana.model;
 
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -23,9 +27,11 @@ public class Caravana {
     private Boolean proteccion;
 
     @ManyToOne
+    @JoinColumn(name = "ciudad_actual_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Ciudad ciudadActual;
 
-    @OneToMany
+    @OneToMany //(mappedBy = "caravana_id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Producto> inventario;
 
     @OneToMany

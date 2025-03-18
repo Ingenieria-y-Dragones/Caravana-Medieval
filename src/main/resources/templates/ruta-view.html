@@ -2,19 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruta View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: #3498db;
+            text-align: center;
+            width: 100%;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Ruta View</h1>
-    <ul>
-        <li th:text="${ruta.Nombre}"></li>
-        <li th:text="${ruta.Daño}"></li>
-        <li th:text="${ruta.Distancia}"></li>
-        <li th:text="${ruta.Segura} ? 'Sí' : 'No'"></li>
-        <li th:text="${ruta.ciudadOrigen.Nombre}"></li>
-        <li th:text="${ruta.ciudadDestino.Nombre}"></li>
-    </ul>
-    <!--<p th:text="|${ciudad.Nombre} ${ciudad.Impuesto}|"></p>-->
-    <a th:href="@{/ruta/list}">Volver</a>
+    <div class="container">
+        <h1>Ruta View</h1>
+        <ul>
+            <li><strong>Nombre:</strong> <span th:text="${ruta.Nombre}"></span></li>
+            <li><strong>Daño:</strong> <span th:text="${ruta.Daño}"></span></li>
+            <li><strong>Distancia:</strong> <span th:text="${ruta.Distancia}"></span></li>
+            <li><strong>¿Es segura?:</strong> <span th:text="${ruta.Segura} ? 'Sí' : 'No'"></span></li>
+            <li><strong>Ciudad de Origen:</strong> <span th:text="${ruta.ciudadOrigen}"></span></li>
+            <li><strong>Ciudad de Destino:</strong> <span th:text="${ruta.ciudadDestino}"></span></li>
+        </ul>
+        <a class="btn" th:href="@{/ruta/list}">Volver</a>
+    </div>
 </body>
 </html>

@@ -1,16 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ciudad View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Ciudad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            padding: 5px 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: #3498db;
+            text-align: center;
+            width: 100%;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Ciudad View</h1>
-    <ul>
-        <li th:text="${ciudad.Nombre}"></li>
-        <li th:text="${ciudad.Impuesto}"></li>
-    </ul>
-    <!--<p th:text="|${ciudad.Nombre} ${ciudad.Impuesto}|"></p>-->
-    <a th:href="@{/ciudad/list}">Volver</a>
+    <div class="container">
+        <h1>Detalles de Ciudad</h1>
+
+        <p><strong>Nombre:</strong> <span th:text="${ciudad.nombre}"></span></p>
+        <p><strong>Impuesto:</strong> <span th:text="${ciudad.impuesto}"></span>%</p>
+
+        <h2>Rutas Entrantes</h2>
+        <ul>
+            <li th:each="ruta : ${ciudad.rutasEntrantes}">
+                <span th:text="${ruta.nombre}"></span>
+            </li>
+        </ul>
+
+        <h2>Rutas Salientes</h2>
+        <ul>
+            <li th:each="ruta : ${ciudad.rutasSalientes}">
+                <span th:text="${ruta.nombre}"></span>
+            </li>
+        </ul>
+
+        <a class="btn" href="/ciudad/list">Volver a la lista</a>
+    </div>
 </body>
 </html>

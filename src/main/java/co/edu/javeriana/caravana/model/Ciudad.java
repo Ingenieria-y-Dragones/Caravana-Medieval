@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+
 
 @Entity
 public class Ciudad {
@@ -23,23 +27,29 @@ public class Ciudad {
     private Double impuesto;
 
     @ElementCollection
+    @CollectionTable(name = "ciudad_productos_disponibles", joinColumns = @JoinColumn(name = "ciudad_id"))
     private Map<Producto, Integer> productosDisponibles; //Stock
 
     @ElementCollection
+    @CollectionTable(name = "ciudad_factores_demanda", joinColumns = @JoinColumn(name = "ciudad_id"))
     private Map<Producto, Double> factoresDemanda; // FD por producto
 
     @ElementCollection
+    @CollectionTable(name = "ciudad_factores_oferta", joinColumns = @JoinColumn(name = "ciudad_id"))
     private Map<Producto, Double> factoresOferta; // FO por producto
 
     @OneToMany
     private List<Servicio> serviciosDisponibles;
 
-    @OneToMany
-    private final Set<Ruta> rutasSalientes = new HashSet<>();
+    @OneToMany(mappedBy = "ciudadDestino", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Ruta> rutasSalientes = new HashSet<>();
+
+    @OneToMany(mappedBy = "ciudadOrigen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Ruta> rutasEntrantes = new HashSet<>();
 
     public Ciudad() {}
 
-    public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Double impuesto,Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles) {
+    public Ciudad(Map<Producto, Double> factoresDemanda, Map<Producto, Double> factoresOferta, Long id, String nombre, Double impuesto,Map<Producto, Integer> productosDisponibles, List<Servicio> serviciosDisponibles, Set<Ruta> rutasEntrantes, Set<Ruta> rutasSalientes) {
         this.factoresDemanda = factoresDemanda;
         this.factoresOferta = factoresOferta;
         this.id = id;
@@ -47,6 +57,8 @@ public class Ciudad {
         this.productosDisponibles = productosDisponibles;
         this.serviciosDisponibles = serviciosDisponibles;
         this.impuesto = impuesto;
+        this.rutasEntrantes =rutasEntrantes;
+        this.rutasSalientes =rutasSalientes;
     }
 
     public double calcularPrecioVenta(Producto producto) {
@@ -120,6 +132,20 @@ public class Ciudad {
         rutasSalientes.add(ruta);
     }
 
+    public void setRutasSalientes(Set<Ruta> rutasSalientes) {
+        this.rutasSalientes = rutasSalientes;
+    }
+    public Set<Ruta> getRutasEntrantes() {
+        return rutasEntrantes;
+    }
+    public void setRutasEntrantes(Set<Ruta> rutasEntrantes) {
+        this.rutasEntrantes = rutasEntrantes;
+    }
+
+    public void agregarRutaEntrante(Ruta ruta) {
+        rutasEntrantes.add(ruta);
+    }
+
     public Double getImpuesto() {
         return impuesto;
     }
@@ -127,6 +153,7 @@ public class Ciudad {
     public void setImpuesto(Double impuesto) {
         this.impuesto = impuesto;
     }
+
 
 }
 

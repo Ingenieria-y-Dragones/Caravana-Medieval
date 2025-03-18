@@ -22,7 +22,6 @@ public class Ruta {
 
     @ManyToOne
     @JoinColumn(name = "ciudad_destino_id", nullable = false)
-
     private Ciudad ciudadDestino;
 
     private Double distancia;
