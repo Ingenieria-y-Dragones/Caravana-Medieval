@@ -1,23 +1,70 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Jugadores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-view { background-color: #3498db; }
+        .btn-edit { background-color: #f39c12; }
+        .btn-delete { background-color: #e74c3c; }
+        .btn-create {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Jugadores</h1>
+
+    <h1>Listado de Jugadores</h1>
     
+    <!-- Botón para agregar un nuevo jugador -->
+    <a class="btn-create" href="/jugador/create">Crear Nuevo Jugador</a>
+
     <!-- Filtro por rol -->
-    <form action="#" th:action="@{/jugador/list}" method="get">
-        <select name="rol">
+    <form action="#" th:action="@{/jugador/list}" method="get" style="margin-bottom: 20px;">
+        <label for="rol">Filtrar por Rol:</label>
+        <select name="rol" id="rol">
             <option value="">Todos</option>
             <option th:each="rol : ${roles}" 
                     th:value="${rol}"
                     th:text="${rol}"></option>
         </select>
-        <button type="submit">Filtrar</button>
+        <button type="submit" class="btn btn-view">Filtrar</button>
     </form>
 
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -32,14 +79,13 @@
                 <td th:text="${jugador.nombre}"></td>
                 <td th:text="${jugador.rol}"></td>
                 <td>
-                    <a th:href="@{/jugador/view/{id}(id=${jugador.id})}">Ver</a>
-                    <a th:href="@{/jugador/edit/{id}(id=${jugador.id})}">Editar</a>
-                    <a th:href="@{/jugador/delete/{id}(id=${jugador.id})}">Eliminar</a>
+                    <a class="btn btn-view" th:href="@{/jugador/view/{id}(id=${jugador.id})}">Ver</a>
+                    <a class="btn btn-edit" th:href="@{/jugador/edit/{id}(id=${jugador.id})}">Editar</a>
+                    <a class="btn btn-delete" th:href="@{/jugador/delete/{id}(id=${jugador.id})}">Eliminar</a>
                 </td>
             </tr>
         </tbody>
     </table>
-    
-    <a href="/jugador/create">Crear Nuevo Jugador</a>
+
 </body>
 </html>

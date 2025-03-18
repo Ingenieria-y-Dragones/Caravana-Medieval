@@ -1,29 +1,73 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle de Jugador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            padding: 5px 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: #3498db;
+            text-align: center;
+            width: 100%;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Detalle de Jugador</h1>
-    
-    <ul>
-        <li>ID: <span th:text="${jugador.id}"></span></li>
-        <li>Nombre: <span th:text="${jugador.nombre}"></span></li>
-        <li>Tiempo Jugado: <span th:text="${jugador.tiempoJugado}"></span></li>
-        <li>Rol: <span th:text="${jugador.rol}"></span></li>
+    <div class="container">
+        <h1>Detalle de Jugador</h1>
+
+        <p><strong>ID:</strong> <span th:text="${jugador.id}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${jugador.nombre}"></span></p>
+        <p><strong>Tiempo Jugado:</strong> <span th:text="${jugador.tiempoJugado}"></span></p>
+        <p><strong>Rol:</strong> <span th:text="${jugador.rol}"></span></p>
 
         <!-- Información específica según rol -->
-        <li th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).CARAVANERO}">
-            Caravana: <span th:text="${jugador.caravana.nombre}"></span>
-        </li>
-        <li th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).COMERCIANTE}">
-            Ciudad: <span th:text="${jugador.ciudad.nombre}"></span>
-        </li>
-        <li th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).ADMINISTRADOR}">
-            Sistema: <span th:text="${jugador.sistema.nombre}"></span>
-        </li>
-    </ul>
-    
-    <a th:href="@{/jugador/list}">Volver</a>
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).CARAVANERO}">
+            <p><strong>Caravana:</strong> <span th:text="${jugador.caravana.nombre}"></span></p>
+        </div>
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).COMERCIANTE}">
+            <p><strong>Ciudad:</strong> <span th:text="${jugador.ciudad.nombre}"></span></p>
+        </div>
+        <div th:if="${jugador.rol == T(co.edu.javeriana.caravana.model.Jugador.TipoRol).ADMINISTRADOR}">
+            <p><strong>Sistema:</strong> <span th:text="${jugador.sistema.nombre}"></span></p>
+        </div>
+
+        <a class="btn" th:href="@{/jugador/list}">Volver a la lista</a>
+    </div>
 </body>
 </html>
