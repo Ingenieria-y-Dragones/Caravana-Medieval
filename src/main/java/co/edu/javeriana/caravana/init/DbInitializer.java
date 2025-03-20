@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -124,7 +125,7 @@ public class DbInitializer implements CommandLineRunner {
 
         // 2. Generar ciudades
         List<Ciudad> ciudades = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             Map<Producto, Integer> stock = new HashMap<>();
             Map<Producto, Double> factoresDemanda = new HashMap<>();
             Map<Producto, Double> factoresOferta = new HashMap<>();
@@ -156,30 +157,33 @@ public class DbInitializer implements CommandLineRunner {
 
         // 3. Generar rutas aleatorias entre ciudades
         List<Ruta> rutas = new ArrayList<>();
+        Set<String> rutasExistentes = new HashSet<>(); // Para evitar rutas duplicadas
+
         for (Ciudad ciudad : ciudades) {
             int rutasPorCiudad = random.nextInt(4) + 2; // Entre 2 y 5 rutas por ciudad
             for (int j = 0; j < rutasPorCiudad; j++) {
                 Ciudad destino = ciudades.get(random.nextInt(ciudades.size()));
-                if (!ciudad.equals(destino)) {
-                    String nombre = "Ruta " + ciudad.getNombre() + " – " + destino.getNombre();
-                    Ruta ruta = new Ruta(
-                        null, 
-                        nombre, 
-                        ciudad, 
-                        destino, 
-                        50.0 + random.nextDouble() * 450.0, 
-                        random.nextBoolean(), 
-                        random.nextInt(20)
-                    );
-                    rutas.add(ruta);
-                    ciudad.agregarRutaSaliente(ruta);
-                    destino.agregarRutaEntrante(ruta); // Nueva línea para establecer la ruta entrante
+                
+                if (!ciudad.equals(destino)) { // Evitar rutas a sí misma
+                    String claveRuta = ciudad.getNombre() + "-" + destino.getNombre();
+                    
+                    if (!rutasExistentes.contains(claveRuta)) { // Verifica si ya existe la ruta
+                        String nombre = "Ruta " + ciudad.getNombre() + " - " + destino.getNombre();
+                        Ruta ruta = new Ruta(null, nombre, ciudad, destino, 50.0 + random.nextDouble() * 450.0, random.nextBoolean(), random.nextInt(20));
+
+                        rutas.add(ruta);
+                        rutasExistentes.add(claveRuta); // Agrega la ruta al conjunto de rutas existentes
+                        
+                        ciudad.agregarRutaSaliente(ruta);
+                        destino.agregarRutaEntrante(ruta);
+                    }
                 }
             }
         }
 
         rutaRepository.saveAll(rutas);
         ciudadRepository.saveAll(ciudades); // Guardar ciudades con rutas actualizadas
+
 
         // 4. Generar mapa
         Mapa mapa = new Mapa(null);
@@ -220,18 +224,8 @@ public class DbInitializer implements CommandLineRunner {
             caravanaAsignada.getJugadores().add(caravanero); // Relación bidireccional
         }
 
-        jugadorRepository.saveAll(jugadores);
-        caravanaRepository.saveAll(caravanas); // Guardar caravanas con jugadores
-
-        // 7. Generar sistema
-        Sistema sistema = new Sistema(
-            caravanas, 
-            10000.0, 
-            null, 
-            List.of(mapa), 
-            3600L, 
-            productos
-        );
+        // Generar el sistema de juego
+        Sistema sistema = new Sistema(caravanas, 10000.0, null, List.of(mapa), 3600L, productos);
         sistemaRepository.save(sistema);
     }
 
