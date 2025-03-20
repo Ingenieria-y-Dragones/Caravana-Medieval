@@ -13,6 +13,7 @@ import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
 import co.edu.javeriana.caravana.repository.JugadorRepository;
 import co.edu.javeriana.caravana.repository.SistemaRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class JugadorService {
@@ -87,5 +88,25 @@ public class JugadorService {
 
     public void deleteById(Long id) {
         jugadorRepo.deleteById(id);
+    }
+
+    /**
+     * @param jugador
+     * @throws RuntimeException
+     */
+    @Transactional
+    public void saveOrUpdate(Jugador jugador) throws RuntimeException {
+        if (jugador.getRol() == Jugador.TipoRol.ADMINISTRADOR) {
+            Sistema sistema = null;
+            try {
+                sistema = SistemaRepository.findById(jugador.getSistema().getId())
+                    .orElseThrow(() -> new RuntimeException("Sistema no encontrado"));
+            } catch (RuntimeException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            jugador.setSistema(sistema);
+        }
+        jugadorRepo.save(jugador);
     }
 }

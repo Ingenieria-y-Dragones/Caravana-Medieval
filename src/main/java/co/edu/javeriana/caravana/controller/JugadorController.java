@@ -1,7 +1,9 @@
 package co.edu.javeriana.caravana.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import co.edu.javeriana.caravana.model.Jugador;
+import co.edu.javeriana.caravana.model.Jugador.TipoRol;
 import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
+import co.edu.javeriana.caravana.repository.JugadorRepository;
 import co.edu.javeriana.caravana.repository.SistemaRepository;
 import co.edu.javeriana.caravana.service.JugadorService;
 
@@ -70,14 +74,25 @@ public class JugadorController {
         return "jugador-view";
     }
 
-    @GetMapping("/edit/{id}")
+    @Autowired
+    private JugadorRepository jugadorRepository;
+
+    @Autowired
+    private SistemaRepository sistemaRepository;
+
+    @GetMapping("/jugador/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        Jugador jugador = jugadorService.findById(id);
+        Jugador jugador = jugadorRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
+
+        // Inicializar relaciones para evitar LazyInitializationException
+        if (jugador.getRol() == TipoRol.ADMINISTRADOR) {
+            Hibernate.initialize(jugador.getSistema());
+        }
+
         model.addAttribute("jugador", jugador);
-        model.addAttribute("caravanas", caravanaRepo.findAll());
-        model.addAttribute("ciudades", ciudadRepo.findAll());
-        model.addAttribute("sistemas", sistemaRepo.findAll());
-        model.addAttribute("roles", Jugador.TipoRol.values());
+        model.addAttribute("roles", Arrays.asList(TipoRol.values()));
+        model.addAttribute("sistemas", sistemaRepository.findAll()); // AGREGADO
         return "jugador-form";
     }
 

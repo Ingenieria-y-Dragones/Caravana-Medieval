@@ -1,7 +1,5 @@
 package co.edu.javeriana.caravana.model;
 
-import java.util.Objects;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,7 +19,6 @@ public class Jugador {
     private String nombre;
     private Long tiempoJugado;
 
-    // Relaciones de las subclases originales
     @ManyToOne
     @JoinColumn(name = "caravana_id")
     private Caravana caravana;
@@ -66,51 +63,4 @@ public class Jugador {
     public void setCiudad(Ciudad ciudad) { this.ciudad = ciudad; }
     public Sistema getSistema() { return sistema; }
     public void setSistema(Sistema sistema) { this.sistema = sistema; }
-
-    // Lógica de acciones según rol
-    public void realizarAccion() {
-        switch(rol) {
-            case CARAVANERO -> {
-                comerciar();
-                viajarEntreCiudades();
-                pagarServicios();
-            }
-            case COMERCIANTE -> comerciar();
-            case ADMINISTRADOR -> realizarCRUD();
-        }
-    }
-
-    // Métodos específicos (ahora en Jugador)
-    private void comerciar() {
-        if (rol == TipoRol.CARAVANERO) {
-            System.out.println(nombre + " está comerciando en " + caravana.getCiudadActual());
-        } else if (rol == TipoRol.COMERCIANTE) {
-            System.out.println(nombre + " está comerciando en " + ciudad.getNombre());
-        }
-    }
-
-    private void viajarEntreCiudades() {
-        System.out.println(nombre + " está viajando entre ciudades.");
-    }
-
-    private void pagarServicios() {
-        System.out.println(nombre + " está pagando por servicios.");
-    }
-
-    private void realizarCRUD() {
-        System.out.println(nombre + " está realizando operaciones CRUD en el sistema " );
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Jugador jugador = (Jugador) o;
-        return Objects.equals(id, jugador.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
