@@ -1,0 +1,45 @@
+/* Estilo general */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .background {
+    background-color: #000033; /* Fondo oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    text-align: center;
+    color: white;
+  }
+  
+  h1 {
+    font-size: 3rem; /* Tamaño grande del título */
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Mayúsculas */
+  }
+  
+  .dragon-image {
+    width: 200px; /* Ajusta el tamaño de la imagen según sea necesario */
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
