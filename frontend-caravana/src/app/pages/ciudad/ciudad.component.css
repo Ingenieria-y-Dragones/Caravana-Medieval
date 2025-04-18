@@ -13,7 +13,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('assets/castle_background.png'); /* Reemplaza con la ruta de tu imagen de castillo */
+    background-image: url('../../../assets/castle_background.png'); /* Reemplaza con la ruta de tu imagen de castillo */
     background-size: cover;
     background-position: center;
     filter: brightness(80%); /* Oscurece un poco la imagen para mejor contraste del texto */
