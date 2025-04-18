@@ -1,0 +1,85 @@
+.ciudad-seleccionada-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+    overflow: hidden; /* Para que la imagen de fondo no se desborde */
+    font-family: sans-serif;
+    color: white;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/castle_background.jpg'); /* Reemplaza con la ruta de tu imagen de castillo */
+    background-size: cover;
+    background-position: center;
+    filter: brightness(80%); /* Oscurece un poco la imagen para mejor contraste del texto */
+    z-index: -1; /* Envía la imagen al fondo */
+}
+
+.toolbar {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para la barra */
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar-left span {
+    margin-right: 15px;
+}
+
+.toolbar-right button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 8px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.toolbar-right button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.content-area {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 30px;
+}
+
+.list-container {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente para las listas */
+    padding: 20px;
+    border-radius: 8px;
+    width: 30%; /* Ajusta el ancho según necesites */
+}
+
+.list-container h2 {
+    color: #eee;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.list-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.list-container li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.list-container li:last-child {
+    border-bottom: none;
+}
