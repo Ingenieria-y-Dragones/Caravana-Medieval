@@ -28,13 +28,15 @@
 <div class="panels-container">
   <!-- Products Panel -->
   <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">Products available for purchase at the castle</div>
+    <div class="panel-header" (click)="toggle('products')">
+      <div class="panel-title">
+        Products available for purchase at the castle
+      </div>
       <div class="panel-subtitle">Products</div>
     </div>
-    <div class="panel-items">
+    <div class="panel-items" [hidden]="!panels.products">
       <ng-container *ngFor="let product of ['A','B','C','D']">
-        <div class="item">
+        <div class="item hoverable">
           <div class="item-info">
             <span class="star">★</span>
             <div class="item-details">
@@ -50,13 +52,15 @@
 
   <!-- Services Panel -->
   <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">Services available for purchase at the castle</div>
+    <div class="panel-header" (click)="toggle('services')">
+      <div class="panel-title">
+        Services available for purchase at the castle
+      </div>
       <div class="panel-subtitle">Services</div>
     </div>
-    <div class="panel-items">
+    <div class="panel-items" [hidden]="!panels.services">
       <ng-container *ngFor="let service of ['A','B','C','D']">
-        <div class="item">
+        <div class="item hoverable">
           <div class="item-info">
             <span class="star">★</span>
             <div class="item-details">
@@ -72,13 +76,15 @@
 
   <!-- Inventory Panel -->
   <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">The products available in your inventory to sell</div>
+    <div class="panel-header" (click)="toggle('inventory')">
+      <div class="panel-title">
+        The products available in your inventory to sell
+      </div>
       <div class="panel-subtitle">Product</div>
     </div>
-    <div class="panel-items">
+    <div class="panel-items" [hidden]="!panels.inventory">
       <ng-container *ngFor="let item of ['A','B','C','D']">
-        <div class="item">
+        <div class="item hoverable">
           <div class="item-info">
             <span class="star">★</span>
             <div class="item-details">

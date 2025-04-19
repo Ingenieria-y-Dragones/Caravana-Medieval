@@ -11,18 +11,46 @@
     overflow-x: hidden;
   }
   
+  /* FONDO BASE + IMAGEN CASTILLO COMO CAPA INFERIOR */
+  .background {
+    position: fixed; /* <- CORREGIDO: para que no se desplace con scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* <- mantiene la imagen detrás */
+    background-color: #0a1f3c; /* fondo azul oscuro */
+    pointer-events: none; /* <- no bloquea clics */
+  }
+  
+  .background::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/castle_background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+  
+  /* HEADER Y ELEMENTOS SUPERIORES */
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 5px 5px; /* más compacto */
     background-color: #f5f0e1;
     color: #0a1f3c;
+    position: relative; /* <- NUEVO: asegura superposición */
+    z-index: 2;          /* <- NUEVO: lo pone encima del fondo */
   }
   
   .logo {
     width: 50px;
     height: 50px;
+    margin-right: 10px;
   }
   
   .stats {
@@ -30,6 +58,7 @@
     gap: 20px;
     font-size: 28px;
     font-weight: bold;
+    margin-left: -80px; /* más cerca del logo */
   }
   
   .time {
@@ -44,6 +73,7 @@
     color: #8b0000;
   }
   
+  /* BARRA DE NAVEGACIÓN */
   .nav {
     display: flex;
     gap: 10px;
@@ -72,11 +102,12 @@
     color: white;
   }
   
+  /* TÍTULO CENTRAL */
   .title-container {
     text-align: center;
     padding: 20px 0;
     position: relative;
-    z-index: 2;
+    z-index: 1; /* <- NUEVO: para estar por encima del fondo */
   }
   
   .title {
@@ -94,28 +125,17 @@
     font-style: italic;
   }
   
-  .background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background-image: url('/assets/castle_background.png');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.8;
-  }
-  
+  /* CONTENEDOR DE PANELES */
   .panels-container {
     display: flex;
     justify-content: space-around;
     position: relative;
-    z-index: 2;
+    z-index: 1; /* <- NUEVO: para que esté por encima del fondo */
     padding: 0 20px;
     margin-top: 20px;
   }
   
+  /* PANEL */
   .panel {
     background-color: rgba(245, 240, 225, 0.9);
     border-radius: 5px;
@@ -126,6 +146,7 @@
   
   .panel-header {
     margin-bottom: 15px;
+    cursor: pointer;
   }
   
   .panel-title {
@@ -145,6 +166,7 @@
     gap: 15px;
   }
   
+  /* ITEMS DENTRO DE LOS PANELES */
   .item {
     display: flex;
     justify-content: space-between;
@@ -186,5 +208,12 @@
   
   .price.sell {
     color: #006400;
+  }
+  
+  /* EFECTO HOVER */
+  .item.hoverable:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
