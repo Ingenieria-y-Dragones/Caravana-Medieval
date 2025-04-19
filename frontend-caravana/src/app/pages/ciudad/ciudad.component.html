@@ -1,46 +1,94 @@
-<div class="ciudad-seleccionada-container">
-    <div class="background-image"></div>
-    <div class="toolbar">
-        <div class="toolbar-left">
-            <span class="time">00:00</span>
-            <span class="hp">HP: 100</span>
-            <span class="mo">MO: 1000</span>
-        </div>
-        <div class="toolbar-right">
-            <button>Mapa</button>
-            <button>Castillo</button>
-            <button>Rutas</button>
-            <button>Sign In</button>
-            <button>Register</button>
-        </div>
+<div class="background"></div>
+
+<header class="header">
+  <img src="/assets/dragon_header.png" alt="Dragon Logo" class="logo" />
+
+  <div class="stats">
+    <span class="time">00:00</span>
+    <span class="hp">HP:100</span>
+    <span class="money">MO: 1000</span>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn">Map</button>
+    <button class="nav-btn active">Castle</button>
+    <button class="nav-btn">Routes</button>
+    <button class="nav-btn sign">Sign in</button>
+    <button class="nav-btn register">Register</button>
+  </div>
+</header>
+
+<div class="title-container">
+  <h1 class="title">
+    <span class="title-top">Castle of</span><br />
+    <span class="title-bottom">Jacarta</span>
+  </h1>
+</div>
+
+<div class="panels-container">
+  <!-- Products Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Products available for purchase at the castle</div>
+      <div class="panel-subtitle">Products</div>
     </div>
-    <div class="content-area">
-        <div class="list-container">
-            <h2>Productos Disponibles</h2>
-            <ul>
-                <li>Producto A - Descripción... - $$$</li>
-                <li>Producto B - Descripción... - $$$</li>
-                <li>Producto C - Descripción... - $$$</li>
-                <li>Producto D - Descripción... - $$$</li>
-                </ul>
+    <div class="panel-items">
+      <ng-container *ngFor="let product of ['A','B','C','D']">
+        <div class="item">
+          <div class="item-info">
+            <span class="star">★</span>
+            <div class="item-details">
+              <div class="item-name">Product {{ product }}</div>
+              <div class="item-desc">Descrip...</div>
+            </div>
+          </div>
+          <div class="price purchase">$$$</div>
         </div>
-        <div class="list-container">
-            <h2>Servicios Disponibles</h2>
-            <ul>
-                <li>Servicio A - Beneficios... - $$$</li>
-                <li>Servicio B - Beneficios... - $$$</li>
-                <li>Servicio C - Beneficios... - $$$</li>
-                <li>Servicio D - Beneficios... - $$$</li>
-            </ul>
-        </div>
-        <div class="list-container">
-            <h2>Inventario para Vender</h2>
-            <ul>
-                <li>Producto X - Descripción... - $$$</li>
-                <li>Producto Y - Descripción... - $$$</li>
-                <li>Producto Z - Descripción... - $$$</li>
-                <li>Producto W - Descripción... - $$$</li>
-            </ul>
-        </div>
+      </ng-container>
     </div>
+  </div>
+
+  <!-- Services Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Services available for purchase at the castle</div>
+      <div class="panel-subtitle">Services</div>
+    </div>
+    <div class="panel-items">
+      <ng-container *ngFor="let service of ['A','B','C','D']">
+        <div class="item">
+          <div class="item-info">
+            <span class="star">★</span>
+            <div class="item-details">
+              <div class="item-name">Service {{ service }}</div>
+              <div class="item-desc">Benefits...</div>
+            </div>
+          </div>
+          <div class="price purchase">$$$</div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Inventory Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">The products available in your inventory to sell</div>
+      <div class="panel-subtitle">Product</div>
+    </div>
+    <div class="panel-items">
+      <ng-container *ngFor="let item of ['A','B','C','D']">
+        <div class="item">
+          <div class="item-info">
+            <span class="star">★</span>
+            <div class="item-details">
+              <div class="item-name">Product {{ item }}</div>
+              <div class="item-desc">Descrip...</div>
+            </div>
+          </div>
+          <div class="price sell">$$$</div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </div>

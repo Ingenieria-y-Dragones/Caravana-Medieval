@@ -1,85 +1,190 @@
-.ciudad-seleccionada-container {
-    position: relative;
-    width: 100%;
-    height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
-    overflow: hidden; /* Para que la imagen de fondo no se desborde */
-    font-family: sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  body {
+    background-color: #0a1f3c;
+    color: #f5f0e1;
+    overflow-x: hidden;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f5f0e1;
+    color: #0a1f3c;
+  }
+  
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .time {
+    color: #4a0000;
+  }
+  
+  .hp {
+    color: #0a1f3c;
+  }
+  
+  .money {
+    color: #8b0000;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .nav-btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .nav-btn.active {
+    background-color: #8b0000;
     color: white;
-}
-
-.background-image {
+  }
+  
+  .nav-btn.sign {
+    background-color: #8b0000;
+    color: white;
+  }
+  
+  .nav-btn.register {
+    background-color: #222;
+    color: white;
+  }
+  
+  .title-container {
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .title {
+    font-size: 80px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .title-top {
+    color: #f5f0e1;
+  }
+  
+  .title-bottom {
+    color: #8b0000;
+    font-style: italic;
+  }
+  
+  .background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
     background-image: url('/assets/castle_background.png');
     background-size: cover;
     background-position: center;
-    filter: brightness(80%); /* Oscurece un poco la imagen para mejor contraste del texto */
-    z-index: -1; /* Envía la imagen al fondo */
-}
-
-.toolbar {
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para la barra */
-    color: white;
-    padding: 10px 20px;
+    opacity: 0.8;
+  }
+  
+  .panels-container {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+    margin-top: 20px;
+  }
+  
+  .panel {
+    background-color: rgba(245, 240, 225, 0.9);
+    border-radius: 5px;
+    width: 30%;
+    color: #333;
+    padding: 15px;
+  }
+  
+  .panel-header {
+    margin-bottom: 15px;
+  }
+  
+  .panel-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .panel-subtitle {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 5px;
+  }
+  
+  .panel-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.toolbar-left span {
-    margin-right: 15px;
-}
-
-.toolbar-right button {
-    background-color: transparent;
-    color: white;
-    border: 1px solid white;
-    padding: 8px 15px;
-    margin-left: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
-}
-
-.toolbar-right button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.content-area {
+  }
+  
+  .item-info {
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    padding: 30px;
-}
-
-.list-container {
-    background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente para las listas */
-    padding: 20px;
-    border-radius: 8px;
-    width: 30%; /* Ajusta el ancho según necesites */
-}
-
-.list-container h2 {
-    color: #eee;
-    margin-top: 0;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.list-container ul {
-    list-style: none;
-    padding: 0;
-}
-
-.list-container li {
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.list-container li:last-child {
-    border-bottom: none;
-}
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .star {
+    font-size: 20px;
+  }
+  
+  .item-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .item-name {
+    font-weight: bold;
+  }
+  
+  .item-desc {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .price {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .price.purchase {
+    color: #8b0000;
+  }
+  
+  .price.sell {
+    color: #006400;
+  }
+  
