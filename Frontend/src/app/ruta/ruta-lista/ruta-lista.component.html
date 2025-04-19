@@ -1,0 +1,79 @@
+<div *ngIf="parametroCaravana">
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="left-header">
+        <div class="logo-container">
+          <img src="/dragon.png" alt="Dragon" class="dragon-logo" />
+        </div>
+        <div class="stats-container">
+          <div class="stat-item">
+            <span class="stat-label">Tiempo:</span>
+            <span class="stat-value">{{ parametroCaravana.tiempoTranscurrido }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Vida:</span>
+            <span class="stat-value">{{ parametroCaravana.puntosVida }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Dinero:</span>
+            <span class="stat-value">{{ parametroCaravana.dinero }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-buttons">
+        <button class="header-button">Viajar</button>
+        <button class="header-button">Mapa</button>
+        <button (click)="back()" class="header-button exit-button">Salir</button>
+      </div>
+    </header>
+
+    <!-- Main Content - Routes List -->
+    <main class="routes-main">
+      <div class="routes-container">
+        <h2 class="routes-title">Rutas Disponibles</h2>
+
+        <div *ngIf="parametroRutas && parametroRutas.length > 0; else noRutas">
+          <div class="routes-list">
+            <div class="route-card" *ngFor="let ruta of parametroRutas; let i = index">
+              <div class="route-header">
+                <h3 class="route-name">{{ ruta.nombre }}</h3>
+                <div class="route-danger-badge">{{ ruta.peligro }}</div>
+              </div>
+
+              <div class="route-details">
+                <div class="route-detail">
+                  <div class="detail-icon">🛣️</div>
+                  <div class="detail-content">
+                    <span class="detail-label">Distancia:</span>
+                    <span class="detail-value">{{ ruta.distancia }} km</span>
+                  </div>
+                </div>
+
+                <div class="route-detail">
+                  <div class="detail-icon">💥</div>
+                  <div class="detail-content">
+                    <span class="detail-label">Daño Potencial:</span>
+                    <span class="detail-value">{{ ruta.danio }}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="route-actions">
+                <button class="route-button travel-button" (click)="viajar(ruta.id)">Viajar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noRutas>
+          <div class="no-routes">
+            <div class="no-routes-icon">🗺️</div>
+            <p class="no-routes-text">No hay rutas disponibles en este momento.</p>
+          </div>
+        </ng-template>
+      </div>
+    </main>
+  </div>
+</div>
+
