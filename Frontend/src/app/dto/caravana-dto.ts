@@ -7,6 +7,6 @@ export class CaravanaDto {
     public dinero: number,
     public puntosVida: number,
     public tieneGuardias: boolean,
-    public tiempoTranscurrido: number
+    public tiempoTranscurrido: number // Correcto: tipo number
   ){ }
 }

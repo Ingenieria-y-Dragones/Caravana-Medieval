@@ -1,4 +1,5 @@
-<div *ngIf="parametroCaravana">
+<!-- Añade un estado de carga -->
+<div *ngIf="parametroCaravana as caravana; else loading">
   <div class="dashboard-container">
     <!-- Header -->
     <header class="dashboard-header">
@@ -9,15 +10,16 @@
         <div class="stats-container">
           <div class="stat-item">
             <span class="stat-label">Tiempo:</span>
-            <span class="stat-value">{{ parametroCaravana.tiempoTranscurrido }}</span>
+            <!-- Usa el operador de navegación segura -->
+            <span class="stat-value">{{ caravana.tiempoTranscurrido }}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Vida:</span>
-            <span class="stat-value">{{ parametroCaravana.puntosVida }}</span>
+            <span class="stat-value">{{ caravana.puntosVida }}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Dinero:</span>
-            <span class="stat-value">{{ parametroCaravana.dinero }}</span>
+            <span class="stat-value">{{ caravana.dinero }}</span>
           </div>
         </div>
       </div>
@@ -77,3 +79,9 @@
   </div>
 </div>
 
+<!-- Estado de carga -->
+<ng-template #loading>
+  <div class="loading-container">
+    <p>Cargando datos de la caravana...</p>
+  </div>
+</ng-template>
