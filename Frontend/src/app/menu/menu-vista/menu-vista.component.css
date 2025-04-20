@@ -1,71 +1,46 @@
-/* Import fonts */
-@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;600;700&display=swap");
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background-color: #1a233a; /* Un tono de azul oscuro similar al fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: white;
+  text-align: center;
+}
 
-/* Main container */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #0a1738; /* Dark navy blue */
-  color: #f5f5dc; /* Cream/beige */
-  padding: 1.5rem;
 }
 
-/* Title styling */
-.title {
-  font-family: "Cinzel", "MedievalSharp", serif;
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 2.5rem;
-  text-align: center;
-  letter-spacing: 0.5px;
+h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
 }
 
-/* Image container */
-.imageContainer {
-  position: relative;
-  width: 100%;
-  max-width: 28rem;
-  margin-bottom: 2.5rem;
+.dragon-container {
+  margin-bottom: 30px;
 }
 
-/* Image styling */
-.image {
-  margin: 0 auto;
-  border: 2px solid #d2b48c; /* Light brown/coffee color */
-  border-radius: 0.5rem;
+.dragon-container img {
+  width: 150px; /* Ajusta el tamaño del dragón según sea necesario */
+  height: auto;
 }
 
-/* Button styling */
-.button {
-  padding: 0.75rem 2rem;
-  background-color: #8b0000; /* Burgundy/dark red */
-  color: #f5f5dc; /* Cream/beige */
-  border: 1px solid #0a1738;
-  border-radius: 0.375rem;
-  font-family: "Cinzel", "MedievalSharp", serif;
-  font-weight: bold;
+.start-button {
+  background-color: #37474f; /* Un tono grisáceo para el botón */
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2em;
   cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 0.5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-.button:hover {
-  background-color: #a52a2a; /* Lighter red on hover */
-  transform: translateY(-4px);
-}
-
-/* Responsive adjustments */
-@media (min-width: 768px) {
-  .title {
-    font-size: 3rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .title {
-    font-size: 3.75rem;
-  }
+.start-button:hover {
+  background-color: #546e7a;
 }
