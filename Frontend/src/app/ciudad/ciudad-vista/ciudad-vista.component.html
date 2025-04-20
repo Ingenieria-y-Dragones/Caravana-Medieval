@@ -1,23 +1,10 @@
+<!-- Fondo específico para esta pantalla -->
 <div class="background"></div>
 
-<header class="header">
-  <img src="dragon.png" alt="Dragon Logo" class="logo" />
+<!-- Componente Header -->
+<app-header></app-header>
 
-  <div class="stats">
-    <span class="time">00:00</span>
-    <span class="hp">HP:100</span>
-    <span class="money">MO: 1000</span>
-  </div>
-
-  <div class="nav">
-    <button class="nav-btn">Map</button>
-    <button class="nav-btn active">Castle</button>
-    <button class="nav-btn">Routes</button>
-    <button class="nav-btn sign">Sign in</button>
-    <button class="nav-btn register">Register</button>
-  </div>
-</header>
-
+<!-- Título principal -->
 <div class="title-container">
   <h1 class="title">
     <span class="title-top">Castle of</span><br />
@@ -25,6 +12,7 @@
   </h1>
 </div>
 
+<!-- Contenedor de paneles -->
 <div class="panels-container">
   <!-- Products Panel -->
   <div class="panel">
@@ -35,7 +23,7 @@
       <div class="panel-subtitle">Products</div>
     </div>
     <div class="panel-items" [hidden]="!panels.products">
-      <ng-container *ngFor="let product of ['A','B','C','D']">
+      <ng-container *ngFor="let product of ['A', 'B', 'C', 'D']">
         <div class="item hoverable">
           <div class="item-info">
             <span class="star">★</span>
@@ -59,7 +47,7 @@
       <div class="panel-subtitle">Services</div>
     </div>
     <div class="panel-items" [hidden]="!panels.services">
-      <ng-container *ngFor="let service of ['A','B','C','D']">
+      <ng-container *ngFor="let service of ['A', 'B', 'C', 'D']">
         <div class="item hoverable">
           <div class="item-info">
             <span class="star">★</span>
@@ -83,7 +71,7 @@
       <div class="panel-subtitle">Product</div>
     </div>
     <div class="panel-items" [hidden]="!panels.inventory">
-      <ng-container *ngFor="let item of ['A','B','C','D']">
+      <ng-container *ngFor="let item of ['A', 'B', 'C', 'D']">
         <div class="item hoverable">
           <div class="item-info">
             <span class="star">★</span>

@@ -1,0 +1,25 @@
+<div class="nav">
+    <button
+      class="nav-btn"
+      [class.active]="activeButton === 'map'"
+      (click)="activeButton = 'map'"
+    >
+      Map
+    </button>
+    <button
+      class="nav-btn"
+      [class.active]="activeButton === 'castle'"
+      (click)="activeButton = 'castle'"
+    >
+      Castle
+    </button>
+    <button
+      class="nav-btn"
+      [class.active]="activeButton === 'routes'"
+      (click)="activeButton = 'routes'"
+    >
+      Routes
+    </button>
+    <button class="nav-btn sign">Sign in</button>
+    <button class="nav-btn register">Register</button>
+  </div>
