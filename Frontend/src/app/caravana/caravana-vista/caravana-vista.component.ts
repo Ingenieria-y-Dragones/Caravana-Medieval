@@ -4,6 +4,7 @@ import {CaravanaDto} from '../../dto/caravana-dto';
 import {CaravanaService} from '../caravana.service';
 import {JugadorDto} from '../../dto/jugador-dto';
 import {CiudadDto} from '../../dto/ciudad-dto';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-caravana-vista',
@@ -20,6 +21,8 @@ export class CaravanaVistaComponent {
 
   @Input()
   parametroCiudad: CiudadDto | undefined;
+  http: any;
+  apiUrl: any;
 
 
   constructor(
@@ -37,4 +40,8 @@ export class CaravanaVistaComponent {
   back() {
     this.router.navigate(["/caravana/vista"]);
   }
+  getEstadoCiudadCaravana(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}/estado-ciudad`);
+  }
+  
 }

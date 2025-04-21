@@ -1,10 +1,13 @@
 package co.edu.javeriana.caravana.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.javeriana.caravana.dto.CaravanaDTO;
 import co.edu.javeriana.caravana.dto.JugadorDTO;
+import co.edu.javeriana.caravana.model.Juego;
+import co.edu.javeriana.caravana.model.Jugador;
+import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.service.CaravanaService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/caravana")
 public class CaravanaController {
+
     @Autowired
     private CaravanaService caravanaService;
+
+    @Autowired
+    private CaravanaRepository caravanaRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @GetMapping("{idCaravana}/jugadores")
     public List<JugadorDTO> listarJugadores(@PathVariable("idCaravana") Long id) {
         logger.info("Lista de jugadores");
-        return (List<JugadorDTO>) caravanaService.listarJugadores(id).orElseThrow();
+        return caravanaService.listarJugadores(id).orElseThrow();
     }
-
 
     @GetMapping("{idCaravana}")
     public CaravanaDTO buscarCaravana(@PathVariable("idCaravana") Long id) {
@@ -58,4 +67,34 @@ public class CaravanaController {
         logger.info("Eliminar caravana");
         caravanaService.eliminarCaravana(id);
     }
+
+    @GetMapping("{idCaravana}/estado-ciudad")
+public ResponseEntity<Map<String, Object>> obtenerEstadoCiudad(@PathVariable("idCaravana") Long idCaravana) {
+    logger.info("Obteniendo estado de ciudad para caravana " + idCaravana);
+    return caravanaRepository.findById(idCaravana).map(caravana -> {
+        Map<String, Object> estado = new HashMap<>();
+        estado.put("salud", caravana.getPuntosVida());
+        estado.put("dinero", caravana.getDinero());
+        estado.put("velocidad", caravana.getVelocidad());
+
+        if (caravana.getCiudad() != null) {
+            estado.put("ciudadNombre", caravana.getCiudad().getNombre());
+        } else {
+            estado.put("ciudadNombre", "Desconocida");
+        }
+
+        // Accedemos a tiempo del juego desde el primer jugador de la caravana
+        if (caravana.getJugadores() != null && !caravana.getJugadores().isEmpty()) {
+            Jugador jugador = caravana.getJugadores().get(0);
+            Juego juego = jugador.getJuego();
+            if (juego != null) {
+                estado.put("tiempoMaximo", juego.getTiempoLimite());
+            }
+        }
+
+        return ResponseEntity.ok(estado);
+    }).orElse(ResponseEntity.notFound().build());
+}
+
+    
 }

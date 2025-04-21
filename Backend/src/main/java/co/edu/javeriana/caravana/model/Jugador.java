@@ -1,6 +1,11 @@
 package co.edu.javeriana.caravana.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Jugador {
@@ -11,6 +16,10 @@ public class Jugador {
 
     private String nombre;
     private TipoJugador tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "juegoid")
+    private Juego juego;
 
     @ManyToOne
     private Caravana caravana;
@@ -53,5 +62,13 @@ public class Jugador {
 
     public void setCaravana(Caravana caravana) {
         this.caravana = caravana;
+    }
+    
+    public Juego getJuego() {
+        return juego;
+    }
+    
+    public void setJuego(Juego juego) {
+        this.juego = juego;
     }
 }
