@@ -1,13 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Injectable } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CaravanaService } from '../../caravana/caravana.service';
 
-import { CaravanaService } from '../../../service/caravana.service';
 import { Subscription, interval } from 'rxjs';
-@Injectable({
-  providedIn: 'root'
-})
 
 @Component({
   selector: 'app-header',
@@ -31,7 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private loadEstado(): void {
-    this.caravanaService.getEstadoCiudadCaravana(this.idCaravana)
+    this.caravanaService.obtenerEstadoCiudad(this.idCaravana)
       .subscribe((data: any) => {
         this.estado = data;
         if (data.tiempoMaximo != null && data.inicioJuego) {

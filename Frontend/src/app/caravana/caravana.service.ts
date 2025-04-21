@@ -42,4 +42,8 @@ export class CaravanaService {
       this.httpOptions
     )
   }
+  obtenerEstadoCiudad(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.serverUrl}/caravana/${id}/estado-ciudad`);
+  }
+  
 }

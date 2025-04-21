@@ -37,7 +37,7 @@ public class CaravanaController {
     private CaravanaRepository caravanaRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-
+    
     @GetMapping("{idCaravana}/jugadores")
     public List<JugadorDTO> listarJugadores(@PathVariable("idCaravana") Long id) {
         logger.info("Lista de jugadores");
