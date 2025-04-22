@@ -1,4 +1,5 @@
 export interface InventarioCiudadDto {
+  idProducto: any;
 precio: any;
 cantidad: any;
 nombre: any;

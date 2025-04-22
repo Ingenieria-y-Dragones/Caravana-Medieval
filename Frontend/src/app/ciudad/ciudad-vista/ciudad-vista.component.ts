@@ -127,4 +127,18 @@ export class CiudadVistaComponent implements OnInit {
       console.error('No tienes unidades disponibles para vender');
     }
   }
+
+  calcularPrecioVenta(producto: InventarioCaravanaDto): number {
+    // Obtener los datos necesarios de la ciudad actual
+    const inventarioCiudad = this.productos.find(p => p.idProducto === producto.id);
+    
+    if (!inventarioCiudad) return 0;
+    
+    // Implementar la fórmula: PV = FD/(1+S)
+    const factorDemanda = inventarioCiudad.factorDemanda || 1.0;
+    const stockCiudad = inventarioCiudad.cantidad || 0;
+    
+    return factorDemanda / (1 + stockCiudad);
+  }
+
 }
