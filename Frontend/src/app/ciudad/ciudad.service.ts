@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CiudadDto } from '../dto/ciudad-dto';
 import { InventarioCiudadDto } from '../dto/inventarioCiudad-dto';
-import { ServicioOfrecidoDto } from '../dto/servicioOfrecio-dto';
+import { ServicioOfrecidoDto } from '../dto/servicioOfrecido-dto';
 
 @Injectable({
   providedIn: 'root'

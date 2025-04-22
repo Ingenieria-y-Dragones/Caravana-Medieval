@@ -128,30 +128,34 @@ public class DBInitializer implements CommandLineRunner {
     private void crearProductos() {
         if (productoRepository.count() == 0) {
             List<Producto> productos = new ArrayList<>();
-
+    
             for (TipoProducto tipo : TipoProducto.values()) {
                 Producto producto = new Producto(tipo);
+                producto.setNombre(tipo.name()); // Asignar nombre basado en el tipo
                 productos.add(producto);
             }
-
+    
             productoRepository.saveAll(productos);
             logger.info("Productos creados: {}", productos.size());
         }
     }
+    
 
     private void crearServicios() {
         if (servicioRepository.count() == 0) {
             List<Servicio> servicios = new ArrayList<>();
-
+    
             for (TipoServicio tipo : TipoServicio.values()) {
                 Servicio servicio = new Servicio(tipo);
+                servicio.setNombre(tipo.name()); // Asignar nombre basado en el tipo
                 servicios.add(servicio);
             }
-
+    
             servicioRepository.saveAll(servicios);
             logger.info("Servicios creados: {}", servicios.size());
         }
     }
+    
 
     private void crearCiudades() {
         if (ciudadRepository.count() == 0) {

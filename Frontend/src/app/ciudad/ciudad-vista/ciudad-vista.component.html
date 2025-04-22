@@ -15,7 +15,8 @@
 
 <!-- Contenedor de paneles -->
 <div class="panels-container">
-  <!-- Products Panel -->
+
+<!-- Products Panel -->
 <div class="panel">
   <div class="panel-header" (click)="toggle('products')">
     <div class="panel-title">
@@ -24,16 +25,16 @@
     <div class="panel-subtitle">Products</div>
   </div>
   <div class="panel-items" [hidden]="!panels.products">
-    <ng-container *ngFor="let item of productos">
+    <ng-container *ngFor="let producto of productos">
       <div class="item hoverable">
         <div class="item-info">
           <span class="star">★</span>
           <div class="item-details">
-            <div class="item-name">{{ item.producto.tipo.nombre }}</div>
-            <div class="item-desc">Stock: {{ item.existencias }} units</div>
+            <div class="item-name">{{ producto.nombreProducto }}</div>
+            <div class="item-desc">Stock: {{ producto.existencias }} units</div>
           </div>
         </div>
-        <div class="price purchase">${{ item.factorOferta * 100 | number:'1.0-0' }}</div>
+        <div class="price purchase">${{ producto.factorOferta * 100 | number:'1.0-0' }}</div>
       </div>
     </ng-container>
   </div>
@@ -48,21 +49,20 @@
     <div class="panel-subtitle">Services</div>
   </div>
   <div class="panel-items" [hidden]="!panels.services">
-    <ng-container *ngFor="let service of servicios">
+    <ng-container *ngFor="let servicio of servicios">
       <div class="item hoverable">
         <div class="item-info">
           <span class="star">★</span>
           <div class="item-details">
-            <div class="item-name">{{ service.servicio.tipo.nombre }}</div>
+            <div class="item-name">{{ servicio.nombreServicio }}</div>
             <div class="item-desc">Premium service</div>
           </div>
         </div>
-        <div class="price purchase">${{ service.precio }}</div>
+        <div class="price purchase">${{ servicio.precio }}</div>
       </div>
     </ng-container>
   </div>
 </div>
-
 
   <!-- Inventory Panel -->
   <div class="panel">
