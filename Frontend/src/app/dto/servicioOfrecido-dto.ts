@@ -1,6 +1,9 @@
-// servicio-ofrecido-dto.ts
 export interface ServicioOfrecidoDto {
   id: number;
-  nombreServicio: string;
+  servicio: {
+    id: number;
+    nombre: string;
+    tipo: string;
+  };
   precio: number;
 }

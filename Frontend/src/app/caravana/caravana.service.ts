@@ -48,10 +48,23 @@ export class CaravanaService {
     return this.http.get<any>(`${environment.serverUrl}/caravana/${id}/estado-ciudad`);
   }
 
-  // MÉTODO AGREGADO:
   obtenerInventarioCaravana(idCaravana: number): Observable<InventarioCaravanaDto[]> {
     return this.http.get<InventarioCaravanaDto[]>(
       `${environment.serverUrl}/caravana/${idCaravana}/inventario`
     );
   }
+
+  comprarProducto(idCaravana: number, productoId: number, cantidad: number): Observable<any> {
+    return this.http.post(`${environment.serverUrl}/caravana/${idCaravana}/comprar-producto`, {
+      productoId,
+      cantidad
+    });
+  }
+  
+  comprarServicio(idCaravana: number, servicioId: number): Observable<any> {
+    return this.http.post(`${environment.serverUrl}/caravana/${idCaravana}/comprar-servicio`, {
+      servicioId
+    });
+  }
+  
 }

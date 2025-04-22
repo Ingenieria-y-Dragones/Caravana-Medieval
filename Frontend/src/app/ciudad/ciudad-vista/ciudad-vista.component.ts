@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CiudadService } from '../../ciudad/ciudad.service';
-import { CaravanaService } from '../../caravana/caravana.service'; // Nuevo servicio importado
+import { CaravanaService } from '../../caravana/caravana.service';
 import { InventarioCiudadDto } from '../../dto/inventarioCiudad-dto';
 import { ServicioOfrecidoDto } from '../../dto/servicioOfrecido-dto';
 import { CiudadDto } from '../../dto/ciudad-dto';
-import { InventarioCaravanaDto } from '../../dto/inventario-caravana-dto'; // Nuevo DTO importado
+import { InventarioCaravanaDto } from '../../dto/inventario-caravana-dto';
+import { CaravanaDto } from '../../dto/caravana-dto';
 
 @Component({
   selector: 'app-ciudad-vista',
@@ -19,9 +20,10 @@ export class CiudadVistaComponent implements OnInit {
   ciudadNombre: string = '';
   productos: InventarioCiudadDto[] = [];
   servicios: ServicioOfrecidoDto[] = [];
-  inventarioCaravana: InventarioCaravanaDto[] = []; // Nueva propiedad
-  idCiudad: number = 1; // ID ciudad
-  idCaravana: number = 1; // ID de la caravana del jugador
+  inventarioCaravana: InventarioCaravanaDto[] = [];
+  idCiudad: number = 1;
+  idCaravana: number = 1;
+  dinero: number = 0;
 
   panels = {
     products: true,
@@ -31,45 +33,92 @@ export class CiudadVistaComponent implements OnInit {
 
   constructor(
     private ciudadService: CiudadService,
-    private caravanaService: CaravanaService // Nuevo servicio inyectado
+    private caravanaService: CaravanaService
   ) {}
 
   ngOnInit(): void {
+    this.cargarDatosIniciales();
+  }
+
+  private cargarDatosIniciales(): void {
     this.obtenerNombreCiudad();
     this.cargarProductosYServicios();
-    this.cargarInventarioCaravana(); // Nueva llamada
+    this.cargarInventarioCaravana();
+    this.actualizarDineroCaravana();
   }
 
-  obtenerNombreCiudad(): void {
-    this.ciudadService.obtenerCiudad(this.idCiudad).subscribe(
-      (ciudad: CiudadDto) => {
-        this.ciudadNombre = ciudad.nombre;
+  private obtenerNombreCiudad(): void {
+    this.ciudadService.obtenerCiudad(this.idCiudad).subscribe({
+      next: (ciudad: CiudadDto) => this.ciudadNombre = ciudad.nombre,
+      error: (err) => this.mostrarError('Error al cargar ciudad', err)
+    });
+  }
+
+  private cargarProductosYServicios(): void {
+    this.ciudadService.obtenerProductosCiudad(this.idCiudad).subscribe({
+      next: (productos) => this.productos = productos,
+      error: (err) => this.mostrarError('Error cargando productos', err)
+    });
+
+    this.ciudadService.obtenerServiciosCiudad(this.idCiudad).subscribe({
+      next: (servicios) => this.servicios = servicios,
+      error: (err) => this.mostrarError('Error cargando servicios', err)
+    });
+  }
+
+  private cargarInventarioCaravana(): void {
+    this.caravanaService.obtenerInventarioCaravana(this.idCaravana).subscribe({
+      next: (inventario) => this.inventarioCaravana = inventario,
+      error: (err) => this.mostrarError('Error cargando inventario', err)
+    });
+  }
+
+  private actualizarDineroCaravana(): void {
+    this.caravanaService.recuperarCaravana(this.idCaravana).subscribe({
+      next: (caravana: CaravanaDto) => this.dinero = caravana.dinero,
+      error: (err) => this.mostrarError('Error actualizando dinero', err)
+    });
+  }
+
+  comprarProducto(producto: InventarioCiudadDto): void {
+    const costo = producto.factorOferta * 100;
+
+    this.caravanaService.comprarProducto(this.idCaravana, producto.producto.id, 1).subscribe({
+      next: (response: CaravanaDto) => {
+        this.actualizarDatosPostCompra(response);
+        alert(`¡Compra exitosa de ${producto.producto.nombre}!`);
       },
-      (error) => console.error('Error al cargar ciudad:', error)
-    );
+      error: (err) => {
+        this.mostrarError('Error en compra', err);
+      }
+    });
   }
 
-  cargarProductosYServicios(): void {
-    this.ciudadService.obtenerProductosCiudad(this.idCiudad).subscribe(
-      productos => this.productos = productos,
-      error => console.error('Error productos:', error)
-    );
-    
-    this.ciudadService.obtenerServiciosCiudad(this.idCiudad).subscribe(
-      servicios => this.servicios = servicios,
-      error => console.error('Error servicios:', error)
-    );
+  comprarServicio(servicio: ServicioOfrecidoDto): void {
+    this.caravanaService.comprarServicio(this.idCaravana, servicio.id).subscribe({
+      next: (response: CaravanaDto) => {
+        this.actualizarDatosPostCompra(response);
+        alert(`¡Servicio ${servicio.servicio.nombre} contratado!`);
+      },
+      error: (err) => {
+        this.mostrarError('Error en servicio', err);
+      }
+    });
   }
 
-  // Nuevo método para cargar el inventario
-  cargarInventarioCaravana(): void {
-    this.caravanaService.obtenerInventarioCaravana(this.idCaravana).subscribe(
-      inventario => this.inventarioCaravana = inventario,
-      error => console.error('Error cargando inventario:', error)
-    );
+  private actualizarDatosPostCompra(caravana: CaravanaDto): void {
+    this.dinero = caravana.dinero;
+    this.cargarProductosYServicios();
+    this.cargarInventarioCaravana();
   }
 
-  toggle(section: 'products' | 'services' | 'inventory') {
+  private mostrarError(contexto: string, error: any): void {
+    console.error(`${contexto}:`, error);
+    const mensaje = error.error?.message || error.message || 'Error desconocido';
+    alert(`${contexto}: ${mensaje}`);
+  }
+
+  toggle(section: 'products' | 'services' | 'inventory'): void {
     this.panels[section] = !this.panels[section];
   }
 }

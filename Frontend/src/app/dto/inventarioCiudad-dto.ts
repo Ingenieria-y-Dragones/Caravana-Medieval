@@ -1,6 +1,10 @@
 export interface InventarioCiudadDto {
   id: number;
-  nombreProducto: string;
+  producto: {
+    id: number;
+    nombre: string;
+    tipo: string;
+  };
   existencias: number;
   factorDemanda: number;
   factorOferta: number;
