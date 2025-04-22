@@ -1,11 +1,10 @@
+import { ProductoDto } from "./inventario-caravana-dto";
+
 export interface InventarioCiudadDto {
-  idProducto: any;
-precio: any;
-cantidad: any;
-nombre: any;
   id: number;
-  nombreProducto: string;
-  existencias: number;
+  producto: ProductoDto; // <-- Objeto anidado
+  cantidad: number;
+  precio: number;
   factorDemanda: number;
   factorOferta: number;
 }

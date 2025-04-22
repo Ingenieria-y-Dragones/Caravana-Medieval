@@ -1,11 +1,11 @@
+export interface ProductoDto {
+  id: number;
+  tipo: string;
+  nombre: string;
+}
+
 export interface InventarioCaravanaDto {
-nombre: any;
-    id: number;
-    producto: {
-      id: number;
-      nombre: string;
-      tipo: string;
-    };
-    cantidad: number;
-  }
-  
+  id: number;
+  producto: ProductoDto; // <-- Objeto anidado
+  cantidad: number;
+}

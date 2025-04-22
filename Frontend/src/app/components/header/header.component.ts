@@ -13,11 +13,14 @@ import { Subscription, interval } from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  estado: any = {};
+  estado: any = {
+    dinero: 0,
+    salud: 0
+  };
   tiempoRestante: string = '15:00';
   private estadoSub!: Subscription;
   private timerSub!: Subscription;
-  private transaccionSub!: Subscription; // Nueva suscripción
+  private transaccionSub!: Subscription;
   private idCaravana = 1;
 
   constructor(private caravanaService: CaravanaService) {}
@@ -26,7 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loadEstado(); // Primera carga
     this.estadoSub = interval(10_000).subscribe(() => this.loadEstado()); // Actualiza cada 10s
     
-    // Nueva suscripción para actualización inmediata después de transacciones
+    // Suscripción para actualización inmediata después de transacciones
     this.transaccionSub = this.caravanaService.estadoActualizado$.subscribe(() => {
       this.loadEstado();
     });
@@ -34,16 +37,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private loadEstado(): void {
     this.caravanaService.obtenerEstadoCiudad(this.idCaravana)
-      .subscribe((data: any) => {
-        this.estado = data;
-        if (data.tiempoMaximo != null && data.inicioJuego) {
-          this.startCountdown(data.tiempoMaximo, data.inicioJuego);
+      .subscribe({
+        next: (data: any) => {
+          // Asignar explícitamente los campos para asegurar que se capturan correctamente
+          this.estado = {
+            dinero: data.dinero || 0,
+            salud: data.salud || 0,
+            ciudadNombre: data.ciudadNombre,
+            velocidad: data.velocidad
+          };
+          
+          console.log('Estado cargado:', this.estado); // Para diagnóstico
+          
+          if (data.tiempoMaximo != null && data.inicioJuego) {
+            this.startCountdown(data.tiempoMaximo, data.inicioJuego);
+          }
+        },
+        error: (error) => {
+          console.error('Error al cargar estado:', error);
         }
       });
   }
 
   private startCountdown(tiempoMinutos: number, inicioStr: string) {
-    // Método original sin cambios
     const inicio = new Date(inicioStr).getTime();
     const fin = inicio + tiempoMinutos * 60_000;
 
@@ -60,7 +76,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private formatTime(ms: number): string {
-    // Método original sin cambios
     if (ms <= 0) { return '00:00'; }
     const m = Math.floor(ms / 60_000);
     const s = Math.floor((ms % 60_000) / 1_000);
@@ -70,6 +85,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.estadoSub) this.estadoSub.unsubscribe();
     if (this.timerSub) this.timerSub.unsubscribe();
-    if (this.transaccionSub) this.transaccionSub.unsubscribe(); // Limpiar nueva suscripción
+    if (this.transaccionSub) this.transaccionSub.unsubscribe();
   }
 }

@@ -1,19 +1,16 @@
 <!-- Fondo específico para esta pantalla -->
 <div class="background"></div>
 
-<!-- Componente Header -->
+<!-- Header y título -->
 <app-header></app-header>
 
-<!-- Título principal -->
 <div class="title-container">
-  <!-- El nombre del castillo viene de la base de datos -->
   <h1 class="title">
     <span class="title-top">Castle of </span><br />
     <span class="title-bottom">{{ ciudadNombre }}</span>
   </h1>
 </div>
 
-<!-- Contenedor de paneles -->
 <div class="panels-container">
 
   <!-- Panel de Productos para comprar -->
@@ -27,13 +24,15 @@
         <div class="item-info">
           <span class="star">★</span>
           <div class="item-details">
-            <span class="item-name">{{producto.nombre}}</span>
-            <span class="item-desc">Stock: {{producto.cantidad}} units</span>
+            <span class="item-name">{{ producto.producto.nombre }}</span>
+            <span class="item-desc">Stock: {{ producto.cantidad }} units</span>
           </div>
         </div>
-        <span class="price purchase">${{producto.precio | number:'1.2-2'}}</span>
+        <span class="price purchase">
+          ${{ calcularPrecioCompra(producto) | number:'1.2-2' }}
+        </span>
         <button (click)="comprarProducto(producto)" 
-                [disabled]="estado.dinero < producto.precio || producto.cantidad <= 0"
+                [disabled]="estado.dinero < calcularPrecioCompra(producto) || producto.cantidad <= 0"
                 class="btn-comprar">Comprar</button>
       </div>
     </div>
@@ -50,11 +49,13 @@
         <div class="item-info">
           <span class="star">★</span>
           <div class="item-details">
-            <span class="item-name">{{servicio.nombre}}</span>
+            <span class="item-name">{{ servicio.nombreServicio }}</span>
             <span class="item-desc">Premium service</span>
           </div>
         </div>
-        <span class="price purchase">${{servicio.precio | number:'1.2-2'}}</span>
+        <span class="price purchase">
+          ${{ servicio.precio | number:'1.2-2' }}
+        </span>
         <button (click)="comprarServicio(servicio)"
                 [disabled]="estado.dinero < servicio.precio"
                 class="btn-comprar">Comprar</button>
@@ -73,11 +74,13 @@
         <div class="item-info">
           <span class="star">★</span>
           <div class="item-details">
-            <span class="item-name">{{producto.nombre}}</span>
-            <span class="item-desc">Cantidad: {{producto.cantidad}}</span>
+            <span class="item-name">{{ producto.producto.nombre }}</span>
+            <span class="item-desc">Cantidad: {{ producto.cantidad }}</span>
           </div>
         </div>
-        <span class="price sell">${{calcularPrecioVenta(producto) | number:'1.2-2'}}</span>
+        <span class="price sell">
+          ${{ calcularPrecioVenta(producto) | number:'1.2-2' }}
+        </span>
         <button (click)="venderProducto(producto)"
                 [disabled]="producto.cantidad <= 0"
                 class="btn-vender">Vender</button>
