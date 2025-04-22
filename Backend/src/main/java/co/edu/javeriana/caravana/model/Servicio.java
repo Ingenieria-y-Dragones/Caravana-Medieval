@@ -12,6 +12,10 @@ public class Servicio {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String nombre;
+    
+    private String descripcion;
+
     private TipoServicio tipo;
 
     @OneToMany(mappedBy = "servicio")
@@ -57,5 +61,21 @@ public class Servicio {
 
     public void setServiciosComprados(List<CompraServicio> serviciosComprados) {
         this.serviciosComprados = serviciosComprados;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
