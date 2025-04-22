@@ -1,4 +1,5 @@
 export interface InventarioCaravanaDto {
+nombre: any;
     id: number;
     producto: {
       id: number;

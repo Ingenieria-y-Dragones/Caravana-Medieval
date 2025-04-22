@@ -29,8 +29,8 @@ import co.edu.javeriana.caravana.model.TipoServicio;
 import co.edu.javeriana.caravana.repository.CaravanaRepository;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
 import co.edu.javeriana.caravana.repository.CompraServicioRepository;
-import co.edu.javeriana.caravana.repository.IventarioCaravanaRepository;
-import co.edu.javeriana.caravana.repository.IventarioCiudadRepository;
+import co.edu.javeriana.caravana.repository.InventarioCaravanaRepository;
+import co.edu.javeriana.caravana.repository.InventarioCiudadRepository;
 import co.edu.javeriana.caravana.repository.JuegoRepository;
 import co.edu.javeriana.caravana.repository.JugadorRepository;
 import co.edu.javeriana.caravana.repository.ProductoRepository;
@@ -51,10 +51,10 @@ public class DBInitializer implements CommandLineRunner {
     private CompraServicioRepository compraServicioRepository;
 
     @Autowired
-    private IventarioCaravanaRepository iventarioCaravanaRepository;
+    private InventarioCaravanaRepository iventarioCaravanaRepository;
 
     @Autowired
-    private IventarioCiudadRepository iventarioCiudadRepository;
+    private InventarioCiudadRepository iventarioCiudadRepository;
 
     @Autowired
     private JuegoRepository juegoRepository;
@@ -144,17 +144,27 @@ public class DBInitializer implements CommandLineRunner {
     private void crearServicios() {
         if (servicioRepository.count() == 0) {
             List<Servicio> servicios = new ArrayList<>();
-    
             for (TipoServicio tipo : TipoServicio.values()) {
                 Servicio servicio = new Servicio(tipo);
                 servicio.setNombre(tipo.name()); // Asignar nombre basado en el tipo
+    
+                // Asignar precio base según el tipo de servicio
+                float precioBase = switch (tipo) {
+                    case REPARAR -> 50.0F;
+                    case MEJORAR_CAPACIDAD -> 150.0F;
+                    case MEJORAR_VELOCIDAD -> 200.0F;
+                    case GUARDIAS -> 100.0F;
+                    default -> 75.0F;
+                };
+                servicio.setPrecio(precioBase);
+    
                 servicios.add(servicio);
             }
-    
             servicioRepository.saveAll(servicios);
             logger.info("Servicios creados: {}", servicios.size());
         }
     }
+    
     
 
     private void crearCiudades() {

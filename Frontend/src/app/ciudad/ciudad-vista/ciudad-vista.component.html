@@ -16,74 +16,72 @@
 <!-- Contenedor de paneles -->
 <div class="panels-container">
 
-<!-- Products Panel -->
+<!-- Panel de Productos para comprar -->
 <div class="panel">
   <div class="panel-header" (click)="toggle('products')">
-    <div class="panel-title">
-      Products available for purchase at the castle
-    </div>
-    <div class="panel-subtitle">Products</div>
+    <h3 class="panel-title">Products available for purchase at the castle</h3>
+    <h2 class="panel-subtitle">Products</h2>
   </div>
-  <div class="panel-items" [hidden]="!panels.products">
-    <ng-container *ngFor="let producto of productos">
-      <div class="item hoverable">
-        <div class="item-info">
-          <span class="star">★</span>
-          <div class="item-details">
-            <div class="item-name">{{ producto.nombreProducto }}</div>
-            <div class="item-desc">Stock: {{ producto.existencias }} units</div>
-          </div>
+  <div class="panel-items" *ngIf="panels.products">
+    <div class="item" *ngFor="let producto of productos">
+      <div class="item-info">
+        <span class="star">★</span>
+        <div class="item-details">
+          <span class="item-name">{{producto.nombre}}</span>
+          <span class="item-desc">Stock: {{producto.cantidad}} units</span>
         </div>
-        <div class="price purchase">${{ producto.factorOferta * 100 | number:'1.0-0' }}</div>
       </div>
-    </ng-container>
+      <span class="price purchase">${{producto.precio}}</span>
+      <button (click)="comprarProducto(producto)" 
+              [disabled]="estado.dinero < producto.precio || producto.cantidad <= 0"
+              class="btn-comprar">Comprar</button>
+    </div>
   </div>
 </div>
 
-<!-- Services Panel -->
+<!-- Panel de Servicios para comprar -->
 <div class="panel">
   <div class="panel-header" (click)="toggle('services')">
-    <div class="panel-title">
-      Services available for purchase at the castle
-    </div>
-    <div class="panel-subtitle">Services</div>
+    <h3 class="panel-title">Services available for purchase at the castle</h3>
+    <h2 class="panel-subtitle">Services</h2>
   </div>
-  <div class="panel-items" [hidden]="!panels.services">
-    <ng-container *ngFor="let servicio of servicios">
-      <div class="item hoverable">
-        <div class="item-info">
-          <span class="star">★</span>
-          <div class="item-details">
-            <div class="item-name">{{ servicio.nombreServicio }}</div>
-            <div class="item-desc">Premium service</div>
-          </div>
+  <div class="panel-items" *ngIf="panels.services">
+    <div class="item" *ngFor="let servicio of servicios">
+      <div class="item-info">
+        <span class="star">★</span>
+        <div class="item-details">
+          <span class="item-name">{{servicio.nombre}}</span>
+          <span class="item-desc">Premium service</span>
         </div>
-        <div class="price purchase">${{ servicio.precio }}</div>
       </div>
-    </ng-container>
+      <span class="price purchase">${{servicio.precio}}</span>
+      <button (click)="comprarServicio(servicio)"
+              [disabled]="estado.dinero < servicio.precio"
+              class="btn-comprar">Comprar</button>
+    </div>
   </div>
 </div>
-  <!-- Inventory Panel -->
+
+<!-- Panel de Inventario para vender -->
 <div class="panel">
   <div class="panel-header" (click)="toggle('inventory')">
-    <div class="panel-title">
-      The products available in your inventory to sell
-    </div>
-    <div class="panel-subtitle">Product</div>
+    <h3 class="panel-title">The products available in your inventory to sell</h3>
+    <h2 class="panel-subtitle">Product</h2>
   </div>
-  <div class="panel-items" [hidden]="!panels.inventory">
-    <ng-container *ngFor="let item of inventarioCaravana">
-      <div class="item hoverable">
-        <div class="item-info">
-          <span class="star">★</span>
-          <div class="item-details">
-            <div class="item-name">{{ item.producto.nombre }}</div>
-            <div class="item-desc">Cantidad: {{ item.cantidad }}</div>
-          </div>
+  <div class="panel-items" *ngIf="panels.inventory">
+    <div class="item" *ngFor="let producto of inventarioCaravana">
+      <div class="item-info">
+        <span class="star">★</span>
+        <div class="item-details">
+          <span class="item-name">{{producto.nombre}}</span>
+          <span class="item-desc">Cantidad: {{producto.cantidad}}</span>
         </div>
-        <div class="price sell">Vender</div>
       </div>
-    </ng-container>
+      <span class="price sell">Vender</span>
+      <button (click)="venderProducto(producto)"
+              [disabled]="producto.cantidad <= 0"
+              class="btn-vender">Vender</button>
+    </div>
   </div>
 </div>
 </div>

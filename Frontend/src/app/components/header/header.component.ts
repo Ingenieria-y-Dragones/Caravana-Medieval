@@ -17,13 +17,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   tiempoRestante: string = '15:00';
   private estadoSub!: Subscription;
   private timerSub!: Subscription;
+  private transaccionSub!: Subscription; // Nueva suscripción
   private idCaravana = 1;
 
   constructor(private caravanaService: CaravanaService) {}
 
   ngOnInit(): void {
-    this.loadEstado(); // Primera carga del estado
+    this.loadEstado(); // Primera carga
     this.estadoSub = interval(10_000).subscribe(() => this.loadEstado()); // Actualiza cada 10s
+    
+    // Nueva suscripción para actualización inmediata después de transacciones
+    this.transaccionSub = this.caravanaService.estadoActualizado$.subscribe(() => {
+      this.loadEstado();
+    });
   }
 
   private loadEstado(): void {
@@ -37,10 +43,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private startCountdown(tiempoMinutos: number, inicioStr: string) {
+    // Método original sin cambios
     const inicio = new Date(inicioStr).getTime();
     const fin = inicio + tiempoMinutos * 60_000;
 
-    // Detener timer anterior si existe
     if (this.timerSub) {
       this.timerSub.unsubscribe();
     }
@@ -54,6 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private formatTime(ms: number): string {
+    // Método original sin cambios
     if (ms <= 0) { return '00:00'; }
     const m = Math.floor(ms / 60_000);
     const s = Math.floor((ms % 60_000) / 1_000);
@@ -63,5 +70,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.estadoSub) this.estadoSub.unsubscribe();
     if (this.timerSub) this.timerSub.unsubscribe();
+    if (this.transaccionSub) this.transaccionSub.unsubscribe(); // Limpiar nueva suscripción
   }
 }

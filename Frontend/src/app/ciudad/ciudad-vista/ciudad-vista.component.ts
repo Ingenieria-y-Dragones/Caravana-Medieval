@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CiudadService } from '../../ciudad/ciudad.service';
-import { CaravanaService } from '../../caravana/caravana.service'; // Nuevo servicio importado
+import { CaravanaService } from '../../caravana/caravana.service';
 import { InventarioCiudadDto } from '../../dto/inventarioCiudad-dto';
 import { ServicioOfrecidoDto } from '../../dto/servicioOfrecido-dto';
 import { CiudadDto } from '../../dto/ciudad-dto';
-import { InventarioCaravanaDto } from '../../dto/inventario-caravana-dto'; // Nuevo DTO importado
+import { InventarioCaravanaDto } from '../../dto/inventario-caravana-dto';
 
 @Component({
   selector: 'app-ciudad-vista',
@@ -19,9 +19,10 @@ export class CiudadVistaComponent implements OnInit {
   ciudadNombre: string = '';
   productos: InventarioCiudadDto[] = [];
   servicios: ServicioOfrecidoDto[] = [];
-  inventarioCaravana: InventarioCaravanaDto[] = []; // Nueva propiedad
-  idCiudad: number = 1; // ID ciudad
-  idCaravana: number = 1; // ID de la caravana del jugador
+  inventarioCaravana: InventarioCaravanaDto[] = [];
+  idCiudad: number = 1;
+  idCaravana: number = 1;
+  estado: any = {}; // Para almacenar dinero y salud
 
   panels = {
     products: true,
@@ -31,13 +32,14 @@ export class CiudadVistaComponent implements OnInit {
 
   constructor(
     private ciudadService: CiudadService,
-    private caravanaService: CaravanaService // Nuevo servicio inyectado
+    private caravanaService: CaravanaService
   ) {}
 
   ngOnInit(): void {
     this.obtenerNombreCiudad();
     this.cargarProductosYServicios();
-    this.cargarInventarioCaravana(); // Nueva llamada
+    this.cargarInventarioCaravana();
+    this.cargarEstadoCaravana(); // Obtener estado inicial (dinero, salud)
   }
 
   obtenerNombreCiudad(): void {
@@ -54,14 +56,12 @@ export class CiudadVistaComponent implements OnInit {
       productos => this.productos = productos,
       error => console.error('Error productos:', error)
     );
-    
     this.ciudadService.obtenerServiciosCiudad(this.idCiudad).subscribe(
       servicios => this.servicios = servicios,
       error => console.error('Error servicios:', error)
     );
   }
 
-  // Nuevo método para cargar el inventario
   cargarInventarioCaravana(): void {
     this.caravanaService.obtenerInventarioCaravana(this.idCaravana).subscribe(
       inventario => this.inventarioCaravana = inventario,
@@ -69,7 +69,62 @@ export class CiudadVistaComponent implements OnInit {
     );
   }
 
+  cargarEstadoCaravana(): void {
+    this.caravanaService.obtenerEstadoCiudad(this.idCaravana).subscribe(
+      data => {
+        this.estado = data;
+      },
+      error => console.error('Error al cargar estado:', error)
+    );
+  }
+
   toggle(section: 'products' | 'services' | 'inventory') {
     this.panels[section] = !this.panels[section];
+  }
+
+  // Nuevos métodos para las transacciones
+  comprarProducto(producto: InventarioCiudadDto): void {
+    if (this.estado.dinero >= producto.precio && producto.cantidad > 0) {
+      this.caravanaService.comprarProducto(this.idCiudad, this.idCaravana, producto.id, 1).subscribe(
+        () => {
+          // Actualizamos listas y estado
+          this.cargarProductosYServicios();
+          this.cargarInventarioCaravana();
+          // El estado se actualizará automáticamente en la nav bar gracias al sistema de notificaciones
+        },
+        error => console.error('Error al comprar producto:', error)
+      );
+    } else {
+      console.error('No tienes suficientes monedas o no hay stock disponible');
+    }
+  }
+
+  comprarServicio(servicio: ServicioOfrecidoDto): void {
+    if (this.estado.dinero >= servicio.precio) {
+      this.caravanaService.comprarServicio(this.idCiudad, this.idCaravana, servicio.id).subscribe(
+        () => {
+          // El sistema de notificaciones actualizará la nav bar
+        },
+        error => console.error('Error al comprar servicio:', error)
+      );
+    } else {
+      console.error('No tienes suficientes monedas para este servicio');
+    }
+  }
+
+  venderProducto(producto: InventarioCaravanaDto): void {
+    if (producto.cantidad > 0) {
+      this.caravanaService.venderProducto(this.idCiudad, this.idCaravana, producto.id, 1).subscribe(
+        () => {
+          // Actualizamos listas y estado
+          this.cargarProductosYServicios();
+          this.cargarInventarioCaravana();
+          // El sistema de notificaciones actualizará la nav bar
+        },
+        error => console.error('Error al vender producto:', error)
+      );
+    } else {
+      console.error('No tienes unidades disponibles para vender');
+    }
   }
 }

@@ -217,3 +217,34 @@
     transition: background-color 0.3s ease;
   }
   
+  .btn-comprar, .btn-vender {
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-comprar {
+    background-color: #8b0000;
+  }
+  
+  .btn-comprar:hover:not([disabled]) {
+    background-color: #a00000;
+  }
+  
+  .btn-vender {
+    background-color: #006400;
+  }
+  
+  .btn-vender:hover:not([disabled]) {
+    background-color: #007800;
+  }
+  
+  .btn-comprar[disabled], .btn-vender[disabled] {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+  

@@ -1,9 +1,14 @@
 package co.edu.javeriana.caravana.model;
 
-import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Servicio {
@@ -15,8 +20,10 @@ public class Servicio {
     private String nombre;
     
     private String descripcion;
-
+    
     private TipoServicio tipo;
+
+    private float precio;
 
     @OneToMany(mappedBy = "servicio")
     List<ServicioOfrecido> ciudades = new ArrayList<ServicioOfrecido>();
@@ -77,5 +84,13 @@ public class Servicio {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
     }
 }
