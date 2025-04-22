@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CaravanaService } from '../../caravana/caravana.service';
+import { StateService } from '../../components/state.service'; // Importar el servicio
 
 import { Subscription, interval } from 'rxjs';
 
@@ -23,15 +24,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private transaccionSub!: Subscription;
   private idCaravana = 1;
 
-  constructor(private caravanaService: CaravanaService) {}
+  constructor(
+    private caravanaService: CaravanaService,
+    private stateService: StateService // Inyectar el servicio
+  ) {}
 
   ngOnInit(): void {
-    this.loadEstado(); // Primera carga
-    this.estadoSub = interval(10_000).subscribe(() => this.loadEstado()); // Actualiza cada 10s
+    // Carga inicial del estado
+    this.loadEstado();
     
-    // Suscripción para actualización inmediata después de transacciones
-    this.transaccionSub = this.caravanaService.estadoActualizado$.subscribe(() => {
-      this.loadEstado();
+    // Suscripción al timer para actualización periódica
+    this.estadoSub = interval(10_000).subscribe(() => this.loadEstado());
+    
+    // Suscripción a notificaciones de cambio de estado
+    this.transaccionSub = this.stateService.estadoActualizado$.subscribe(() => {
+      this.loadEstado(); // Usar el método existente
     });
   }
 
