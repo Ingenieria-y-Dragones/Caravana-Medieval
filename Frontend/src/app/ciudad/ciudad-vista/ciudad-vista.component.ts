@@ -4,6 +4,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { CiudadService } from '../../ciudad/ciudad.service';
 import { InventarioCiudadDto } from '../../dto/inventarioCiudad-dto';
 import { ServicioOfrecidoDto } from '../../dto/servicioOfrecido-dto';
+import { CiudadDto } from '../../dto/ciudad-dto'; // Nuevo DTO importado
 
 @Component({
   selector: 'app-ciudad-vista',
@@ -16,8 +17,8 @@ export class CiudadVistaComponent implements OnInit {
   ciudadNombre: string = '';
   productos: InventarioCiudadDto[] = [];
   servicios: ServicioOfrecidoDto[] = [];
-  idCiudad: number = 1; // O el ID que corresponda
-  
+  idCiudad: number = 1; // Usa el ID correcto
+
   panels = {
     products: true,
     services: true,
@@ -27,25 +28,30 @@ export class CiudadVistaComponent implements OnInit {
   constructor(private ciudadService: CiudadService) {}
 
   ngOnInit(): void {
+    this.obtenerNombreCiudad();
     this.cargarProductosYServicios();
   }
 
-  cargarProductosYServicios(): void {
-    // Usar el pipe async o un indicador de carga mientras se esperan los datos
-    this.ciudadService.obtenerProductosCiudad(this.idCiudad).subscribe(
-      (productos) => {
-        console.log('Productos cargados:', productos);
-        this.productos = productos;
+  // Nuevo método para obtener el nombre de la ciudad
+  obtenerNombreCiudad(): void {
+    this.ciudadService.obtenerCiudad(this.idCiudad).subscribe(
+      (ciudad: CiudadDto) => {
+        console.log('Ciudad recibida:', ciudad); // ← Añade esto
+        this.ciudadNombre = ciudad.nombre;
       },
-      (error) => console.error('Error al cargar productos:', error)
+      (error) => console.error('Error al cargar ciudad:', error)
     );
+  }
 
+  cargarProductosYServicios(): void {
+    this.ciudadService.obtenerProductosCiudad(this.idCiudad).subscribe(
+      productos => this.productos = productos,
+      error => console.error('Error productos:', error)
+    );
+    
     this.ciudadService.obtenerServiciosCiudad(this.idCiudad).subscribe(
-      (servicios) => {
-        console.log('Servicios cargados:', servicios);
-        this.servicios = servicios;
-      },
-      (error) => console.error('Error al cargar servicios:', error)
+      servicios => this.servicios = servicios,
+      error => console.error('Error servicios:', error)
     );
   }
 

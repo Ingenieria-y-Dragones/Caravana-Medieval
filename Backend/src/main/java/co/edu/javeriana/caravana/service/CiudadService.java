@@ -4,11 +4,15 @@ import co.edu.javeriana.caravana.dto.InventarioCiudadDTO;
 import co.edu.javeriana.caravana.dto.ServicioOfrecidoDTO;
 import co.edu.javeriana.caravana.model.*;
 import co.edu.javeriana.caravana.repository.CiudadRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import co.edu.javeriana.caravana.dto.CiudadDTO;
 
 @Service
 public class CiudadService {
@@ -18,6 +22,16 @@ public class CiudadService {
     @Autowired
     public CiudadService(CiudadRepository ciudadRepository) {
         this.ciudadRepository = ciudadRepository;
+    }
+
+    public Optional<CiudadDTO> obtenerCiudad(Long id) {
+        return ciudadRepository.findById(id)
+            .map(ciudad -> {
+                CiudadDTO dto = new CiudadDTO();
+                dto.setId(ciudad.getId());
+                dto.setNombre(ciudad.getNombre());
+                return dto;
+            });
     }
 
     public List<InventarioCiudadDTO> obtenerProductosCiudad(Long idCiudad) {
