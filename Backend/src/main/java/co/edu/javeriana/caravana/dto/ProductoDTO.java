@@ -6,6 +6,8 @@ public class ProductoDTO {
 
     private Long id;
     private TipoProducto tipo;
+    private String nombre;
+
 
     public ProductoDTO() {
     }
@@ -30,4 +32,13 @@ public class ProductoDTO {
     public void setTipo(TipoProducto tipo) {
         this.tipo = tipo;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
 }

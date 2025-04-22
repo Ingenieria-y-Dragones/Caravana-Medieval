@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CiudadService } from '../../ciudad/ciudad.service';
+import { CaravanaService } from '../../caravana/caravana.service'; // Nuevo servicio importado
 import { InventarioCiudadDto } from '../../dto/inventarioCiudad-dto';
 import { ServicioOfrecidoDto } from '../../dto/servicioOfrecido-dto';
-import { CiudadDto } from '../../dto/ciudad-dto'; // Nuevo DTO importado
+import { CiudadDto } from '../../dto/ciudad-dto';
+import { InventarioCaravanaDto } from '../../dto/inventario-caravana-dto'; // Nuevo DTO importado
 
 @Component({
   selector: 'app-ciudad-vista',
@@ -17,7 +19,9 @@ export class CiudadVistaComponent implements OnInit {
   ciudadNombre: string = '';
   productos: InventarioCiudadDto[] = [];
   servicios: ServicioOfrecidoDto[] = [];
-  idCiudad: number = 1; // Usa el ID correcto
+  inventarioCaravana: InventarioCaravanaDto[] = []; // Nueva propiedad
+  idCiudad: number = 1; // ID ciudad
+  idCaravana: number = 1; // ID de la caravana del jugador
 
   panels = {
     products: true,
@@ -25,18 +29,20 @@ export class CiudadVistaComponent implements OnInit {
     inventory: true
   };
 
-  constructor(private ciudadService: CiudadService) {}
+  constructor(
+    private ciudadService: CiudadService,
+    private caravanaService: CaravanaService // Nuevo servicio inyectado
+  ) {}
 
   ngOnInit(): void {
     this.obtenerNombreCiudad();
     this.cargarProductosYServicios();
+    this.cargarInventarioCaravana(); // Nueva llamada
   }
 
-  // Nuevo método para obtener el nombre de la ciudad
   obtenerNombreCiudad(): void {
     this.ciudadService.obtenerCiudad(this.idCiudad).subscribe(
       (ciudad: CiudadDto) => {
-        console.log('Ciudad recibida:', ciudad); // ← Añade esto
         this.ciudadNombre = ciudad.nombre;
       },
       (error) => console.error('Error al cargar ciudad:', error)
@@ -52,6 +58,14 @@ export class CiudadVistaComponent implements OnInit {
     this.ciudadService.obtenerServiciosCiudad(this.idCiudad).subscribe(
       servicios => this.servicios = servicios,
       error => console.error('Error servicios:', error)
+    );
+  }
+
+  // Nuevo método para cargar el inventario
+  cargarInventarioCaravana(): void {
+    this.caravanaService.obtenerInventarioCaravana(this.idCaravana).subscribe(
+      inventario => this.inventarioCaravana = inventario,
+      error => console.error('Error cargando inventario:', error)
     );
   }
 

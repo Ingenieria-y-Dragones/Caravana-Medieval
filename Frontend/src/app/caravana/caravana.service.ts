@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {CaravanaDto} from '../dto/caravana-dto';
-import {JugadorDto} from '../dto/jugador-dto';
-import {CiudadDto} from '../dto/ciudad-dto';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { CaravanaDto } from '../dto/caravana-dto';
+import { JugadorDto } from '../dto/jugador-dto';
+import { CiudadDto } from '../dto/ciudad-dto';
+import { InventarioCaravanaDto } from '../dto/inventario-caravana-dto'; // <--- NUEVO IMPORT
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +43,15 @@ export class CaravanaService {
       this.httpOptions
     )
   }
+
   obtenerEstadoCiudad(id: number): Observable<any> {
     return this.http.get<any>(`${environment.serverUrl}/caravana/${id}/estado-ciudad`);
   }
-  
+
+  // MÉTODO AGREGADO:
+  obtenerInventarioCaravana(idCaravana: number): Observable<InventarioCaravanaDto[]> {
+    return this.http.get<InventarioCaravanaDto[]>(
+      `${environment.serverUrl}/caravana/${idCaravana}/inventario`
+    );
+  }
 }

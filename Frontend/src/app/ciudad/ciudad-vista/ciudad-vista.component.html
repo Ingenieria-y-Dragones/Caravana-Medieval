@@ -63,28 +63,27 @@
     </ng-container>
   </div>
 </div>
-
   <!-- Inventory Panel -->
-  <div class="panel">
-    <div class="panel-header" (click)="toggle('inventory')">
-      <div class="panel-title">
-        The products available in your inventory to sell
-      </div>
-      <div class="panel-subtitle">Product</div>
+<div class="panel">
+  <div class="panel-header" (click)="toggle('inventory')">
+    <div class="panel-title">
+      The products available in your inventory to sell
     </div>
-    <div class="panel-items" [hidden]="!panels.inventory">
-      <ng-container *ngFor="let item of ['A', 'B', 'C', 'D']">
-        <div class="item hoverable">
-          <div class="item-info">
-            <span class="star">★</span>
-            <div class="item-details">
-              <div class="item-name">Product {{ item }}</div>
-              <div class="item-desc">Descrip...</div>
-            </div>
-          </div>
-          <div class="price sell">$$$</div>
-        </div>
-      </ng-container>
-    </div>
+    <div class="panel-subtitle">Product</div>
   </div>
+  <div class="panel-items" [hidden]="!panels.inventory">
+    <ng-container *ngFor="let item of inventarioCaravana">
+      <div class="item hoverable">
+        <div class="item-info">
+          <span class="star">★</span>
+          <div class="item-details">
+            <div class="item-name">{{ item.producto.nombre }}</div>
+            <div class="item-desc">Cantidad: {{ item.cantidad }}</div>
+          </div>
+        </div>
+        <div class="price sell">Vender</div>
+      </div>
+    </ng-container>
+  </div>
+</div>
 </div>
